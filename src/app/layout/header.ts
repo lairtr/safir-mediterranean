@@ -62,9 +62,9 @@ import { OpenStatus } from '../shared/open-status';
       <a routerLink="/" (click)="close()">Home</a>
       <a routerLink="/menu" (click)="close()">Menu</a>
       <a routerLink="/order-online" (click)="close()">Order Online</a>
+      <a [href]="site.cateringUrl" target="_blank" rel="noopener" (click)="close()">Order Catering</a>
       <a routerLink="/" fragment="about-us" (click)="close()">About Us</a>
       <a routerLink="/" fragment="contact-us" (click)="close()">Hours &amp; Location</a>
-      <a [href]="site.cateringUrl" target="_blank" rel="noopener" (click)="close()">Order Catering</a>
       <div class="drawer-info">
         <a [href]="site.phone.tel"><app-icon name="phone" [size]="16" /> {{ site.phone.display }}</a>
         <a [href]="site.address.mapsUrl" target="_blank" rel="noopener"><app-icon name="pin" [size]="16" /> {{ site.address.short }}</a>

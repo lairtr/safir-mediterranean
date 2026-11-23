@@ -55,7 +55,7 @@ import { HeroSlider } from './hero-slider';
     <section class="order shape-top" aria-labelledby="order-title">
       <div class="container order-inner">
         <h2 id="order-title" class="section-title light">Order Delivery or Pickup</h2>
-        <p class="section-sub light">Order on your favorite app, or call us directly.</p>
+        <p class="section-sub light">Order on your favorite app or call us directly.</p>
         <ul class="partners">
           @for (p of site.deliveryPartners; track p.name) {
             <li>
@@ -349,9 +349,13 @@ import { HeroSlider } from './hero-slider';
         height: 80px;
       }
       .order-actions .btn,
-      .visit-actions .btn,
       .center .btn {
         width: 100%;
+      }
+      /* Phones already have Call/Directions in the hero; the phone number
+         above is tappable and the map has its own directions link. */
+      .visit-actions {
+        display: none;
       }
       .map {
         min-height: 300px;

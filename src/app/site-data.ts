@@ -36,9 +36,9 @@ export const SITE = {
   hours: 'Daily, 11:00 AM – 10:00 PM',
   hoursShort: 'Daily 11 AM – 10 PM',
 
-  // The live site links to two different Instagram handles; both kept as-is.
-  instagram: 'https://www.instagram.com/safirmediterranean_lic/',
-  instagramAlt: 'https://www.instagram.com/safir_lic/',
+  // The old WordPress site linked to two handles; safirmediterranean_lic
+  // doesn't resolve, so only safir_lic is used.
+  instagram: 'https://www.instagram.com/safir_lic/',
 
   cateringUrl: 'https://www.ezcater.com/catering/pvt/safir-mediterranean-3?fcv=1',
 
@@ -62,7 +62,7 @@ export const SITE = {
   home: {
     about: {
       title: 'About Us',
-      text: 'With a combination of luxury of taste and affordability, Safir Mediterranean offers a comfortable dining experience with a melding of authentic Turkish flavors, ingredients, and culture.',
+      text: 'Safir Mediterranean offers a comfortable dining experience with a melding of authentic Turkish cuisine and culture.',
       text2: 'We offer a wide range of delightful meals with Turkish and Mediterranean flavors, served in one of the most charming locations in Long Island City, NY.',
       image: { ...img('dining-room', [600, 1200]), alt: 'The Safir Mediterranean dining room' },
     },

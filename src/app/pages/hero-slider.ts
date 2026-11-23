@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { SITE } from '../site-data';
 import { Icon } from '../shared/icon';
 import { OpenStatus } from '../shared/open-status';
@@ -11,7 +10,7 @@ import { OpenStatus } from '../shared/open-status';
  */
 @Component({
   selector: 'app-hero-slider',
-  imports: [RouterLink, Icon, OpenStatus],
+  imports: [Icon, OpenStatus],
   template: `
     <section class="hero" aria-labelledby="hero-title">
       <div class="slides" aria-hidden="true">
@@ -35,12 +34,8 @@ import { OpenStatus } from '../shared/open-status';
       <div class="container content">
         <h1 id="hero-title" class="script">{{ site.tagline }}</h1>
         <p class="intro">{{ site.intro }}</p>
-        <!-- Desktop: menu + order. On phones those live in the sticky header,
-             so the hero offers the other two top mobile actions instead. -->
-        <div class="actions wide-only">
-          <a class="btn btn-light btn-lg" routerLink="/menu">View Menu</a>
-          <a class="btn btn-primary btn-lg" routerLink="/order-online">Order Online</a>
-        </div>
+        <!-- Menu and Order Online are always in the sticky header, so the hero
+             doesn't repeat them. Phones get the other two top mobile actions. -->
         <div class="actions phone-only">
           <a class="btn btn-light btn-lg" [href]="site.phone.tel"><app-icon name="phone" [size]="18" /> Call</a>
           <a class="btn btn-light btn-lg" [href]="site.address.mapsUrl" target="_blank" rel="noopener"><app-icon name="directions" [size]="18" /> Directions</a>
@@ -120,7 +115,7 @@ import { OpenStatus } from '../shared/open-status';
     }
     .facts {
       list-style: none;
-      margin: 28px 0 0;
+      margin: 0;
       padding: 0;
       display: flex;
       flex-wrap: wrap;
@@ -171,7 +166,6 @@ import { OpenStatus } from '../shared/open-status';
       .actions .btn {
         flex: 1 1 140px;
       }
-      .actions.wide-only,
       .facts .wide-only {
         display: none;
       }
