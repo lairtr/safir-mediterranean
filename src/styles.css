@@ -4,9 +4,16 @@
   --menu-blue: #1769aa;
   --red: #ee3039;
   --red-bright: #f70000;
-  --text: #333;
+  /* Darker brand red for filled buttons: white text passes WCAG AA contrast */
+  --red-cta: #c8222b;
+  --red-cta-dark: #a51a22;
+  --ink: #1d2430;
+  --text: #3a4150;
+  --muted: #6b7280;
+  --sand: #f7f3ee;
   --script: 'Berkshire Swash', cursive;
   --sans: Lato, Helvetica, Arial, sans-serif;
+  --radius: 8px;
 }
 
 *,
@@ -18,12 +25,17 @@
 html {
   scroll-behavior: smooth;
 }
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
 
 body {
   margin: 0;
   font-family: var(--sans);
-  font-size: 16px;
-  line-height: 1.6;
+  font-size: 17px;
+  line-height: 1.65;
   color: var(--text);
   background: #fff;
   -webkit-font-smoothing: antialiased;
@@ -45,11 +57,27 @@ h2,
 h3 {
   margin: 0;
   font-weight: 400;
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 2px;
+}
+
+/* Anchored sections land below the sticky header */
+[id] {
+  scroll-margin-top: 96px;
+}
+@media (max-width: 767px) {
+  [id] {
+    scroll-margin-top: 72px;
+  }
 }
 
 .container {
   width: 100%;
-  max-width: 1140px;
+  max-width: 1240px;
   margin: 0 auto;
   padding: 0 20px;
 }
@@ -58,19 +86,98 @@ h3 {
   font-family: var(--script);
 }
 
-/* White "notch" triangle that sits on top of photo bands and the footer */
-.notch-top {
-  position: relative;
+/* Section heading: script title + short sans subtitle */
+.section-title {
+  font-family: var(--script);
+  font-size: clamp(40px, 5vw, 56px);
+  line-height: 1.1;
+  color: var(--red);
+}
+.section-sub {
+  margin: 10px 0 0;
+  font-size: 18px;
+  color: var(--muted);
 }
 
-.notch-top::before {
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 11px 22px;
+  border-radius: 6px;
+  border: 2px solid transparent;
+  font: 700 16px/1.1 var(--sans);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.btn-primary {
+  background: var(--red-cta);
+  color: #fff;
+}
+.btn-primary:hover {
+  background: var(--red-cta-dark);
+}
+.btn-outline {
+  border-color: var(--blue);
+  color: var(--blue);
+  background: #fff;
+}
+.btn-outline:hover {
+  background: var(--blue);
+  color: #fff;
+}
+.btn-blue {
+  background: var(--blue);
+  color: #fff;
+}
+.btn-blue:hover {
+  background: var(--blue-dark);
+}
+.btn-light {
+  background: #fff;
+  color: var(--ink);
+}
+.btn-light:hover {
+  background: var(--sand);
+}
+.btn-lg {
+  min-height: 52px;
+  padding: 14px 28px;
+  font-size: 17px;
+}
+
+/*
+ * White strip with a small rounded notch in the middle — the brand's shape
+ * divider from the original site (viewBox 0 0 1000 20). .shape-top points
+ * down from the top edge; .shape-bottom points up from the bottom edge.
+ */
+.shape-top,
+.shape-bottom {
+  position: relative;
+  --shape-svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 20' preserveAspectRatio='none'%3E%3Cpath d='M0,0v3c0,0,393.8,0,483.4,0c9.2,0,16.6,7.4,16.6,16.6c0-9.1,7.4-16.6,16.6-16.6C606.2,3,1000,3,1000,3V0H0z'/%3E%3C/svg%3E");
+}
+.shape-top::before,
+.shape-bottom::after {
   content: '';
   position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  border-left: 11px solid transparent;
-  border-right: 11px solid transparent;
-  border-top: 11px solid #fff;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  /* colour of the section above/below; set --shape-color on the element */
+  background: var(--shape-color, #fff);
+  -webkit-mask: var(--shape-svg) no-repeat center / 100% 100%;
+  mask: var(--shape-svg) no-repeat center / 100% 100%;
   z-index: 2;
+  pointer-events: none;
+}
+.shape-top::before {
+  top: -1px;
+}
+.shape-bottom::after {
+  bottom: -1px;
+  transform: rotate(180deg);
 }

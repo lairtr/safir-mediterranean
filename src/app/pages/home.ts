@@ -1,147 +1,360 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
 import { SITE } from '../site-data';
+import { Icon } from '../shared/icon';
+import { OpenStatus } from '../shared/open-status';
 import { HeroSlider } from './hero-slider';
 
 @Component({
   selector: 'app-home',
-  imports: [RouterLink, HeroSlider],
+  imports: [RouterLink, HeroSlider, Icon, OpenStatus],
   template: `
     <app-hero-slider />
 
-    <section class="tagline">
+    <!-- Signature dishes: show the food, then send people to the menu -->
+    <section class="dishes" aria-labelledby="dishes-title">
       <div class="container">
-        <h1 class="script">{{ site.tagline }}</h1>
-      </div>
-    </section>
-
-    <section id="about-us" class="card-section">
-      <div class="container">
-        <div class="card">
-          <h2 class="script">{{ home.about.title }}</h2>
-          <p>{{ home.about.text }}</p>
+        <header class="head">
+          <h2 id="dishes-title" class="section-title">{{ home.menu.title }}</h2>
+          <p class="section-sub">{{ home.menu.text }}</p>
+        </header>
+        <ul class="grid">
+          @for (dish of site.dishes; track dish.name) {
+            <li>
+              <a routerLink="/menu" class="dish">
+                <img [src]="dish.src" [attr.srcset]="dish.srcset" sizes="(max-width: 767px) 50vw, 300px" [alt]="dish.name" loading="lazy" decoding="async" width="480" height="480" />
+                <span>{{ dish.name }}</span>
+              </a>
+            </li>
+          }
+        </ul>
+        <div class="center">
+          <a class="btn btn-blue btn-lg" routerLink="/menu">See the Full Menu <app-icon name="arrow-right" [size]="18" /></a>
         </div>
       </div>
     </section>
 
-    <div class="band notch-top" [style.background-image]="'url(' + home.band1 + ')'" role="img" aria-label="Grilled octopus"></div>
-
-    <section class="card-section tall">
-      <div class="container">
-        <div class="card wide">
-          <h2 class="script">{{ home.irresistible.title }}</h2>
-          <p>{{ home.irresistible.text }}</p>
+    <!-- About -->
+    <section id="about-us" class="about" aria-labelledby="about-title">
+      <div class="container about-inner">
+        <img class="about-img" [src]="home.about.image.src" [attr.srcset]="home.about.image.srcset" sizes="(max-width: 767px) 100vw, 480px" [alt]="home.about.image.alt" loading="lazy" decoding="async" width="600" height="750" />
+        <div class="about-text">
+          <h2 id="about-title" class="section-title">{{ home.about.title }}</h2>
+          <p class="lead">{{ home.about.text }}</p>
+          <p>{{ home.about.text2 }}</p>
+          <div class="about-actions">
+            <a class="btn btn-outline" routerLink="/" fragment="contact-us">Hours &amp; Location</a>
+            <a class="btn btn-outline" [href]="site.cateringUrl" target="_blank" rel="noopener">Order Catering</a>
+          </div>
         </div>
       </div>
     </section>
 
-    <div class="band notch-top" [style.background-image]="'url(' + home.band2 + ')'" role="img" aria-label="Greek salad"></div>
-
-    <section class="card-section menu-section">
-      <div class="container">
-        <div class="card">
-          <h2 class="script">{{ home.menu.title }}</h2>
-          <p>{{ home.menu.text }}</p>
-          <a class="btn" routerLink="/menu">View Menu</a>
+    <!-- Ordering -->
+    <section class="order shape-top" aria-labelledby="order-title">
+      <div class="container order-inner">
+        <h2 id="order-title" class="section-title light">Order Delivery or Pickup</h2>
+        <p class="section-sub light">Order on your favorite app, or call us directly.</p>
+        <ul class="partners">
+          @for (p of site.deliveryPartners; track p.name) {
+            <li>
+              <a [href]="p.url" target="_blank" rel="noopener" [attr.aria-label]="'Order on ' + p.name">
+                <img [src]="p.logo" [alt]="p.name" loading="lazy" />
+              </a>
+            </li>
+          }
+        </ul>
+        <div class="order-actions">
+          <a class="btn btn-light btn-lg" [href]="site.phone.tel"><app-icon name="phone" [size]="18" /> Call {{ site.phone.display }}</a>
+          <a class="btn btn-ghost btn-lg" [href]="site.cateringUrl" target="_blank" rel="noopener">Catering via ezCater</a>
         </div>
+      </div>
+    </section>
+
+    <!-- Visit -->
+    <section id="contact-us" class="visit" aria-labelledby="visit-title">
+      <div class="container visit-inner">
+        <div class="visit-info">
+          <h2 id="visit-title" class="section-title">Visit Us</h2>
+          <dl>
+            <div>
+              <dt><app-icon name="clock" [size]="18" /> Hours</dt>
+              <dd>{{ site.hours }}<br /><app-open-status [showHours]="false" /></dd>
+            </div>
+            <div>
+              <dt><app-icon name="pin" [size]="18" /> Address</dt>
+              <dd>{{ site.address.line1 }}<br />Long Island City, NY 11101</dd>
+            </div>
+            <div>
+              <dt><app-icon name="phone" [size]="18" /> Phone</dt>
+              <dd><a [href]="site.phone.tel">{{ site.phone.display }}</a></dd>
+            </div>
+          </dl>
+          <div class="visit-actions">
+            <a class="btn btn-blue" [href]="site.address.mapsUrl" target="_blank" rel="noopener">Get Directions</a>
+            <a class="btn btn-outline" [href]="site.phone.tel">Call Us</a>
+          </div>
+        </div>
+        <iframe
+          class="map"
+          [src]="mapUrl"
+          title="Map showing Safir Mediterranean at 47-31 Vernon Blvd, Long Island City"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
       </div>
     </section>
   `,
   styles: `
-    .tagline {
-      padding: 40px 0 0;
+    .head {
       text-align: center;
+      max-width: 720px;
+      margin: 0 auto 40px;
     }
-    h1 {
-      font-size: 67px;
-      font-weight: 900;
-      line-height: 1.25;
-      color: var(--red-bright);
+    .center {
+      text-align: center;
+      margin-top: 40px;
     }
 
-    .card-section {
-      padding-top: 70px;
+    /* Dishes */
+    .dishes {
+      padding: 88px 0 96px;
     }
-    .card-section.tall {
-      padding-top: 70px;
-    }
-    .menu-section {
-      padding-bottom: 80px;
-    }
-    .card {
-      width: 450px;
-      max-width: 100%;
-      margin-left: auto;
-      margin-right: 70px;
-      background: #fff;
-      padding: 40px 36px 46px;
-      text-align: center;
-      box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
-      position: relative;
-      z-index: 3;
-    }
-    .card.wide {
-      width: 560px;
-    }
-    .card h2 {
-      font-size: 50px;
-      line-height: 1.2;
-      color: var(--red);
-      margin-bottom: 26px;
-    }
-    .card p {
+    .grid {
+      list-style: none;
       margin: 0;
-      font-size: 14px;
-      font-weight: 700;
-      line-height: 1.95;
-      color: #222;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
     }
-    .btn {
-      display: inline-block;
-      margin-top: 26px;
+    .dish {
+      display: block;
+      border-radius: var(--radius);
+      overflow: hidden;
+      position: relative;
+      background: #eee;
+    }
+    .dish img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    .dish:hover img {
+      transform: scale(1.05);
+    }
+    .dish span {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 36px 16px 14px;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.75), transparent);
+      color: #fff;
+      font-weight: 900;
+      font-size: 18px;
+    }
+
+    /* About */
+    .about {
+      background: var(--sand);
+      padding: 96px 0;
+    }
+    .about-inner {
+      display: grid;
+      grid-template-columns: 480px 1fr;
+      gap: 72px;
+      align-items: center;
+    }
+    .about-img {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+      border-radius: var(--radius);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+    }
+    .about-text p {
+      margin: 18px 0 0;
+      max-width: 60ch;
+    }
+    .about-text .lead {
+      font-size: 21px;
+      color: var(--ink);
+      margin-top: 22px;
+    }
+    .about-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    /* Order */
+    .order {
+      --shape-color: var(--sand);
       background: var(--blue);
       color: #fff;
-      font-size: 15px;
-      font-weight: 700;
-      padding: 12px 30px;
-      border-radius: 3px;
-      transition: background 0.2s;
+      padding: 100px 0 96px;
+      text-align: center;
     }
-    .btn:hover {
-      background: var(--blue-dark);
+    .light {
+      color: #fff;
+    }
+    .section-sub.light {
+      color: rgba(255, 255, 255, 0.85);
+    }
+    .partners {
+      list-style: none;
+      margin: 40px auto 0;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+      max-width: 1000px;
+    }
+    .partners a {
+      display: grid;
+      place-items: center;
+      width: 172px;
+      height: 92px;
+      padding: 14px 18px;
+      background: #fff;
+      border-radius: var(--radius);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .partners a:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+    }
+    .partners img {
+      max-height: 60px;
+      width: auto;
+      object-fit: contain;
+    }
+    .order-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 40px;
+    }
+    .btn-ghost {
+      border-color: rgba(255, 255, 255, 0.85);
+      color: #fff;
+    }
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.12);
     }
 
-    .band {
-      height: 461px;
-      background-size: cover;
-      background-position: center;
-      background-color: #000;
+    /* Visit */
+    .visit {
+      padding: 96px 0;
+    }
+    .visit-inner {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 56px;
+      align-items: stretch;
+    }
+    dl {
+      margin: 28px 0 0;
+      display: grid;
+      gap: 22px;
+    }
+    dt {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 900;
+      color: var(--ink);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-size: 13px;
+    }
+    dd {
+      margin: 4px 0 0 26px;
+      font-size: 19px;
+      color: var(--ink);
+    }
+    dd a {
+      color: var(--blue);
+      font-weight: 700;
+    }
+    .visit-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 32px;
+    }
+    .map {
+      width: 100%;
+      min-height: 380px;
+      border: 0;
+      border-radius: var(--radius);
+      background: #eee;
     }
 
     @media (max-width: 1024px) {
-      h1 {
-        font-size: 48px;
+      .grid {
+        grid-template-columns: repeat(3, 1fr);
       }
-      .card,
-      .card.wide {
-        margin: 0 auto;
+      .about-inner {
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
       }
-      .band {
-        height: 340px;
+      .visit-inner {
+        grid-template-columns: 1fr;
       }
     }
-    @media (max-width: 600px) {
-      h1 {
-        font-size: 36px;
+    @media (max-width: 767px) {
+      .dishes,
+      .about,
+      .visit {
+        padding: 60px 0;
       }
-      .card h2 {
-        font-size: 40px;
+      .order {
+        padding: 72px 0 64px;
       }
-      .card {
-        padding: 30px 22px 36px;
+      .head {
+        margin-bottom: 28px;
       }
-      .band {
-        height: 260px;
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+      .dish span {
+        font-size: 16px;
+        padding: 28px 12px 10px;
+      }
+      .about-inner {
+        grid-template-columns: 1fr;
+      }
+      .about-img {
+        aspect-ratio: 4 / 3;
+      }
+      .about-text .lead {
+        font-size: 19px;
+      }
+      .partners {
+        gap: 10px;
+      }
+      .partners li {
+        flex: 1 1 140px;
+      }
+      .partners a {
+        width: 100%;
+        height: 80px;
+      }
+      .order-actions .btn,
+      .visit-actions .btn,
+      .center .btn {
+        width: 100%;
+      }
+      .map {
+        min-height: 300px;
       }
     }
   `,
@@ -149,4 +362,8 @@ import { HeroSlider } from './hero-slider';
 export class Home {
   readonly site = SITE;
   readonly home = SITE.home;
+  // Same Google Maps embed the original site uses; the URL is a constant.
+  readonly mapUrl = inject(DomSanitizer).bypassSecurityTrustResourceUrl(
+    'https://maps.google.com/maps?q=47-31%20Vernon%20Blvd%2C%20Long%20Island%20City%2C%20NY%2011101&t=m&z=16&output=embed&iwloc=near',
+  );
 }

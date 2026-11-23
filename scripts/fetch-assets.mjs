@@ -1,7 +1,11 @@
 // Downloads every image the site uses from the current WordPress site
 // into public/images. Run once (before WordPress is shut down):
 //   npm run fetch-assets
-import { mkdir, writeFile } from 'node:fs/promises';
+//
+// Files that already exist are skipped. Food photos are not handled here:
+// their full-resolution masters live in image-src/ and are turned into
+// responsive WebP files by `npm run optimize-images`.
+import { access, mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -11,16 +15,11 @@ const OUT = join(dirname(fileURLToPath(import.meta.url)), '..', 'public', 'image
 const ASSETS = {
   'logo.png': `${WP}/uploads/2022/10/SafirMediterraneanLogo300px.png`,
   'logo-white.png': `${WP}/uploads/2022/10/SafirMediterraneanLogoWhite300px.png`,
-  'hero-masa.jpeg': `${WP}/uploads/2023/05/masa2-scaled.jpeg`,
-  'hero-lamb-chops.jpeg': `${WP}/uploads/2023/05/22lamp-chops-scaled-e1683836699875.jpeg`,
-  'hero-homemade-bread.jpeg': `${WP}/uploads/2023/05/6-homemadebread-scaled.jpeg`,
-  'band-octopus.jpeg': `${WP}/uploads/2023/05/9-octopus-scaled.jpeg`,
-  'band-greek-salad.jpeg': `${WP}/uploads/2023/05/8-greeksalad-scaled-e1683833732936.jpeg`,
   'doordash.png': `${WP}/uploads/2022/10/DoorDash.png`,
   'seamless.png': `${WP}/uploads/2022/10/Seamless.png`,
   'ubereats.png': `${WP}/uploads/2022/10/UberEats.png`,
   'fantuan.png': `${WP}/uploads/2023/04/SQ8GRgW20Pj8VH6yLuC6stSHjdV1628530496111_200x200-e1682547767224.png`,
-  'chownow.jpg': `${WP}/uploads/2023/05/Chownow-Logo-e1682955883519-300x162.jpg`,
+  'chownow.jpg': `${WP}/uploads/2023/05/Chownow-Logo-e1682955883519.jpg`,
   'restaurant-guru.png': `${WP}/uploads/2023/08/RestaurantGuru_Certificate1.png`,
   'menu/safir1.png': `${WP}/safir-menu/safir1.png`,
   'menu/safir2.png': `${WP}/safir-menu/safir2.png`,
@@ -31,6 +30,10 @@ const ASSETS = {
 let failed = 0;
 for (const [name, url] of Object.entries(ASSETS)) {
   const dest = join(OUT, name);
+  if (await access(dest).then(() => true, () => false)) {
+    console.log(`- ${name} (already exists, skipped)`);
+    continue;
+  }
   try {
     const res = await fetch(url);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);

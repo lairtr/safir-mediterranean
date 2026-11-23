@@ -1,8 +1,17 @@
 /**
  * All restaurant content in one place. Edit this file to change
  * phone, hours, links, menus or photos — no template changes needed.
- * Image paths point to /public/images (run `npm run fetch-assets` once).
+ * Logos/menus live in /public/images; photos are generated into
+ * /public/images/opt from /image-src (run `npm run optimize-images`).
  */
+/** Responsive image set for public/images/opt/<name>-<width>.webp */
+function img(name: string, widths: number[]) {
+  return {
+    src: `images/opt/${name}-${widths[Math.min(1, widths.length - 1)]}.webp`,
+    srcset: widths.map((w) => `images/opt/${name}-${w}.webp ${w}w`).join(', '),
+  };
+}
+
 export const SITE = {
   name: 'Safir Mediterranean',
   tagline: 'Where Istanbul meets Long Island City',
@@ -21,7 +30,11 @@ export const SITE = {
     tel: 'tel:+13479249152',
   },
 
-  hours: '11:00 AM - 10:00 PM',
+  // Open seven days a week. openingHours drives the "Open now" badge and the
+  // structured data in index.html (update both if hours change).
+  openingHours: { open: '11:00', close: '22:00', timeZone: 'America/New_York' },
+  hours: 'Daily, 11:00 AM – 10:00 PM',
+  hoursShort: 'Daily 11 AM – 10 PM',
 
   // The live site links to two different Instagram handles; both kept as-is.
   instagram: 'https://www.instagram.com/safirmediterranean_lic/',
@@ -35,28 +48,40 @@ export const SITE = {
   logo: 'images/logo.png',
   logoWhite: 'images/logo-white.png',
 
+  // Hero carousel: same three photos and framing as the original site.
+  // Responsive WebP versions are generated from the full-resolution masters in
+  // image-src/ by `npm run optimize-images`.
   heroSlides: [
-    { src: 'images/hero-masa.jpeg', alt: 'A table full of Safir dishes' },
-    { src: 'images/hero-lamb-chops.jpeg', alt: 'Lamb chops' },
-    { src: 'images/hero-homemade-bread.jpeg', alt: 'Homemade bread' },
+    { ...img('hero-masa', [640, 1024, 1600, 2400, 3024]), alt: 'A table full of Safir dishes: pides, lahmacun, kebabs and mezes', position: 'center' },
+    { ...img('hero-lamb-chops', [640, 1024, 1600, 2400, 3024]), alt: 'Grilled lamb chops with rice', position: '0% 70%' },
+    { ...img('hero-homemade-bread', [640, 1024, 1600, 2400, 3024]), alt: 'Freshly baked homemade bread', position: 'center' },
   ],
+
+  intro: 'Authentic Turkish & Mediterranean kitchen in Long Island City',
 
   home: {
     about: {
       title: 'About Us',
-      text: 'With a combination of luxury of taste and affordability. Safir Mediterranean offers a comfortable dining experience with a melding of authentic Turkish flavors, ingredients, and culture.',
+      text: 'With a combination of luxury of taste and affordability, Safir Mediterranean offers a comfortable dining experience with a melding of authentic Turkish flavors, ingredients, and culture.',
+      text2: 'We offer a wide range of delightful meals with Turkish and Mediterranean flavors, served in one of the most charming locations in Long Island City, NY.',
+      image: { ...img('dining-room', [600, 1200]), alt: 'The Safir Mediterranean dining room' },
     },
-    band1: 'images/band-octopus.jpeg',
-    irresistible: {
-      title: 'Irrersistable',
-      text: 'We’re offering a wide range of delightful meals with Turkish and Mediterranean flavors, served in a unique and one of the most charming locations in Long Island City, NY.',
-    },
-    band2: 'images/band-greek-salad.jpeg',
     menu: {
-      title: 'Menu',
-      text: 'Although our menu is more popular with our variety of kebabs and pides, we offer a wide variety of healthy and vegetarian appetizers and main dishes.',
+      title: 'Signature Dishes',
+      text: 'Although our menu is most popular for its kebabs and pides, we offer a wide variety of healthy and vegetarian appetizers and main dishes.',
     },
   },
+
+  dishes: [
+    { name: 'Iskender Kebab', ...img('dish-iskender', [480, 960]) },
+    { name: 'Adana Kebab', ...img('dish-adana', [480, 960]) },
+    { name: 'Cheese Pide', ...img('dish-cheese-pide', [480, 960]) },
+    { name: 'Lahmacun', ...img('dish-lahmacun', [480, 960]) },
+    { name: 'Mantı', ...img('dish-manti', [480, 960]) },
+    { name: 'Fried Calamari', ...img('dish-calamari', [480, 960]) },
+    { name: 'Künefe', ...img('dish-kunefe', [480, 960]) },
+    { name: 'Baklava', ...img('dish-baklava', [480, 960]) },
+  ],
 
   deliveryPartners: [
     { name: 'DoorDash', logo: 'images/doordash.png', url: 'https://www.doordash.com/store/safir-mediterranean-queens-2578388' },
@@ -67,25 +92,4 @@ export const SITE = {
   ],
 
   restaurantGuruBadge: 'images/restaurant-guru.png',
-
-  menus: [
-    {
-      id: 'main',
-      label: 'Main Menu',
-      images: [
-        { src: 'images/menu/safir1.png', alt: 'Safir Mediterranean Main Menu Page 1' },
-        { src: 'images/menu/safir2.png', alt: 'Safir Mediterranean Main Menu Page 2' },
-      ],
-    },
-    {
-      id: 'breakfast',
-      label: 'Breakfast Menu',
-      images: [{ src: 'images/menu/safir3.png', alt: 'Safir Mediterranean Breakfast Menu' }],
-    },
-    {
-      id: 'specials',
-      label: "This Week's Specials",
-      images: [{ src: 'images/menu/safir4.png', alt: "Safir Mediterranean This Week's Specials" }],
-    },
-  ],
 } as const;

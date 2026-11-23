@@ -8,8 +8,42 @@
   <meta name="description" content="Where Istanbul meets Long Island City. Turkish and Mediterranean restaurant at 47-31 Vernon Blvd, Long Island City, NY.">
   <link rel="icon" type="image/png" href="images/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preload" as="image" href="images/opt/hero-masa-1600.webp" imagesrcset="images/opt/hero-masa-640.webp 640w, images/opt/hero-masa-1024.webp 1024w, images/opt/hero-masa-1600.webp 1600w, images/opt/hero-masa-2400.webp 2400w, images/opt/hero-masa-3024.webp 3024w" imagesizes="100vw" fetchpriority="high">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Berkshire+Swash&family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#266ab5">
+  <meta property="og:type" content="restaurant">
+  <meta property="og:title" content="Safir Mediterranean | Turkish &amp; Mediterranean Restaurant in Long Island City">
+  <meta property="og:description" content="Where Istanbul meets Long Island City. Kebabs, pides and mezes at 47-31 Vernon Blvd. Order online or visit us.">
+  <meta property="og:image" content="https://safir-mediterranean.com/images/opt/hero-masa-1600.webp">
+  <!-- Structured data so search engines can show address, phone and menu -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    "name": "Safir Mediterranean",
+    "url": "https://safir-mediterranean.com/",
+    "image": "https://safir-mediterranean.com/images/opt/hero-masa-1600.webp",
+    "telephone": "+1-347-924-9152",
+    "servesCuisine": ["Turkish", "Mediterranean"],
+    "hasMenu": "https://safir-mediterranean.com/menu",
+    "openingHoursSpecification": [{
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+      "opens": "11:00",
+      "closes": "22:00"
+    }],
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "47-31 Vernon Blvd",
+      "addressLocality": "Long Island City",
+      "addressRegion": "NY",
+      "postalCode": "11101",
+      "addressCountry": "US"
+    },
+    "sameAs": ["https://www.instagram.com/safirmediterranean_lic/"]
+  }
+  </script>
 </head>
 <body>
   <app-root></app-root>

@@ -1,164 +1,173 @@
 import { Component, HostListener, signal } from '@angular/core';
-import { NgTemplateOutlet } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { SITE } from '../site-data';
 import { Icon } from '../shared/icon';
+import { OpenStatus } from '../shared/open-status';
 
+/**
+ * Always-visible (sticky) header. The two things restaurant visitors look
+ * for first — the menu and online ordering — are real buttons at every
+ * screen size, never hidden in the hamburger.
+ */
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, NgTemplateOutlet, Icon],
+  imports: [RouterLink, Icon, OpenStatus],
   template: `
-    <!-- Blue info bar -->
-    <div class="topbar">
-      <div class="container topbar-inner">
-        <div class="topbar-info">
-          <a [href]="site.address.mapsUrl" target="_blank" rel="noopener">
-            <app-icon name="pin" [size]="13" /> {{ site.address.short }}
-          </a>
-          <a [href]="site.phone.tel"><app-icon name="phone" [size]="13" /> {{ site.phone.short }}</a>
-        </div>
-        <a [href]="site.instagram" target="_blank" rel="noopener" aria-label="Instagram">
-          <app-icon name="instagram" [size]="13" />
+    <a class="skip" href="#main">Skip to content</a>
+
+    <!-- Info bar: desktop/tablet only (on phones this info is in the hero and the drawer) -->
+    <div class="infobar">
+      <div class="container infobar-inner">
+        <a [href]="site.address.mapsUrl" target="_blank" rel="noopener">
+          <app-icon name="pin" [size]="15" /> {{ site.address.short }}
+        </a>
+        <app-open-status />
+        <a [href]="site.phone.tel"><app-icon name="phone" [size]="15" /> {{ site.phone.display }}</a>
+        <a class="ig" [href]="site.instagram" target="_blank" rel="noopener" aria-label="Instagram">
+          <app-icon name="instagram" [size]="16" />
         </a>
       </div>
     </div>
 
-    <!-- Main header -->
-    <header class="main-header">
+    <header class="header" [class.scrolled]="scrolled()">
       <div class="container bar">
         <a routerLink="/" class="logo" aria-label="Safir Mediterranean home">
-          <img [src]="site.logo" alt="Safir Mediterranean" width="172" height="82" />
+          <img [src]="site.logo" alt="Safir Mediterranean" width="301" height="144" />
         </a>
-        <ng-container *ngTemplateOutlet="actions" />
+
+        <nav class="nav" aria-label="Main">
+          <a routerLink="/" fragment="about-us">About</a>
+          <a routerLink="/" fragment="contact-us">Visit</a>
+          <a [href]="site.cateringUrl" target="_blank" rel="noopener">Catering</a>
+        </nav>
+
+        <div class="ctas">
+          <a class="btn btn-outline" routerLink="/menu">Menu</a>
+          <a class="btn btn-primary" routerLink="/order-online">
+            <span class="long">Order Online</span><span class="short">Order</span>
+          </a>
+          <button type="button" class="hamburger" aria-label="Open menu" [attr.aria-expanded]="menuOpen()" (click)="menuOpen.set(true)">
+            <app-icon name="menu" [size]="26" />
+          </button>
+        </div>
       </div>
     </header>
 
-    <!-- Compact sticky header that slides in on scroll -->
-    <div class="sticky" [class.visible]="scrolled()" [attr.aria-hidden]="!scrolled()">
-      <div class="container bar">
-        <a routerLink="/" class="logo" [attr.tabindex]="scrolled() ? null : -1">
-          <img [src]="site.logo" alt="Safir Mediterranean" width="100" height="48" />
-        </a>
-        <ng-container *ngTemplateOutlet="actions" />
-      </div>
-    </div>
-
-    <ng-template #actions>
-      <div class="actions">
-        <a class="btn-catering" [href]="site.cateringUrl" target="_blank" rel="noopener">Order Catering</a>
-        <a class="btn-order" routerLink="/order-online">Order Online</a>
-      </div>
-      <button type="button" class="hamburger" aria-label="Open menu" (click)="menuOpen.set(true)">
-        <app-icon name="menu" [size]="28" />
-      </button>
-    </ng-template>
-
-    <!-- Off-canvas mobile menu -->
+    <!-- Drawer for secondary links (phones/tablets) -->
     <div class="overlay" [class.open]="menuOpen()" (click)="close()"></div>
-    <nav class="offcanvas" [class.open]="menuOpen()" aria-label="Main menu" [attr.aria-hidden]="!menuOpen()">
+    <nav class="drawer" [class.open]="menuOpen()" aria-label="More" [attr.aria-hidden]="!menuOpen()" [attr.inert]="menuOpen() ? null : ''">
       <button type="button" class="close" aria-label="Close menu" (click)="close()">
         <app-icon name="close" [size]="22" />
       </button>
       <a routerLink="/" (click)="close()">Home</a>
-      <a routerLink="/" fragment="about-us" (click)="close()">About Us</a>
       <a routerLink="/menu" (click)="close()">Menu</a>
-      <a [routerLink]="[]" fragment="contact-us" (click)="close()">Contact Us</a>
       <a routerLink="/order-online" (click)="close()">Order Online</a>
+      <a routerLink="/" fragment="about-us" (click)="close()">About Us</a>
+      <a routerLink="/" fragment="contact-us" (click)="close()">Hours &amp; Location</a>
       <a [href]="site.cateringUrl" target="_blank" rel="noopener" (click)="close()">Order Catering</a>
+      <div class="drawer-info">
+        <a [href]="site.phone.tel"><app-icon name="phone" [size]="16" /> {{ site.phone.display }}</a>
+        <a [href]="site.address.mapsUrl" target="_blank" rel="noopener"><app-icon name="pin" [size]="16" /> {{ site.address.short }}</a>
+        <app-open-status />
+        <a [href]="site.instagram" target="_blank" rel="noopener"><app-icon name="instagram" [size]="16" /> Instagram</a>
+      </div>
     </nav>
   `,
   styles: `
-    .topbar {
-      background: var(--blue);
-      color: #fff;
-      font-size: 12px;
-      font-weight: 700;
-      height: 32px;
+    :host {
+      display: contents;
     }
-    .topbar-inner {
-      height: 100%;
+    .skip {
+      position: absolute;
+      left: -9999px;
+      top: 0;
+      z-index: 200;
+      background: #fff;
+      padding: 10px 16px;
+    }
+    .skip:focus {
+      left: 10px;
+    }
+
+    .infobar {
+      background: var(--blue-dark);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .infobar-inner {
+      height: 38px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      gap: 28px;
     }
-    .topbar-info {
-      display: flex;
-      gap: 26px;
-    }
-    .topbar a {
+    .infobar a,
+    .infobar span {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
     }
-    .topbar a:hover {
-      opacity: 0.85;
+    .infobar a:hover {
+      text-decoration: underline;
+    }
+    .infobar .ig {
+      margin-left: auto;
     }
 
-    .main-header {
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
       background: #fff;
-      height: 142px;
+      border-bottom: 1px solid transparent;
+      transition: box-shadow 0.2s, border-color 0.2s;
+    }
+    .header.scrolled {
+      box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+      border-color: #eee;
     }
     .bar {
-      height: 100%;
+      height: 84px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      gap: 32px;
     }
-    .main-header .logo img {
-      width: 172px;
+    .logo img {
+      width: 140px;
     }
-
-    .sticky {
-      position: fixed;
-      inset: 0 0 auto 0;
-      height: 83px;
-      background: rgba(255, 255, 255, 0.93);
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-      z-index: 50;
-      transform: translateY(-100%);
-      transition: transform 0.35s ease;
-    }
-    .sticky.visible {
-      transform: translateY(0);
-    }
-    .sticky .logo img {
-      width: 100px;
-    }
-
-    .actions {
+    .nav {
       display: flex;
-      align-items: center;
-      gap: 14px;
+      gap: 28px;
+      margin-left: 12px;
     }
-    .btn-catering,
-    .btn-order {
-      font-size: 15px;
+    .nav a {
       font-weight: 700;
-      padding: 10px 22px;
-      border-radius: 3px;
-      transition: background 0.2s, color 0.2s;
+      font-size: 16px;
+      color: var(--ink);
+      padding: 6px 0;
+      border-bottom: 2px solid transparent;
     }
-    .btn-catering {
-      color: var(--red);
-    }
-    .btn-catering:hover {
+    .nav a:hover,
+    .nav a.active {
       color: var(--blue);
+      border-color: var(--blue);
     }
-    .btn-order {
-      color: var(--blue);
-      border: 1px solid var(--blue);
+    .ctas {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
-    .btn-order:hover {
-      background: var(--blue);
-      color: #fff;
+    .short {
+      display: none;
     }
-
     .hamburger {
       display: none;
       background: none;
       border: 0;
-      padding: 6px;
-      color: var(--blue);
+      padding: 8px;
+      margin-right: -8px;
+      color: var(--ink);
       cursor: pointer;
     }
 
@@ -175,35 +184,36 @@ import { Icon } from '../shared/icon';
       opacity: 1;
       visibility: visible;
     }
-    .offcanvas {
+    .drawer {
       position: fixed;
       top: 0;
       right: 0;
       height: 100%;
-      width: 300px;
-      max-width: 85vw;
+      width: 320px;
+      max-width: 88vw;
       background: var(--blue);
       padding: 70px 0 30px;
       display: flex;
       flex-direction: column;
+      overflow-y: auto;
       transform: translateX(100%);
-      transition: transform 0.35s ease;
+      transition: transform 0.3s ease;
       z-index: 100;
     }
-    .offcanvas.open {
+    .drawer.open {
       transform: translateX(0);
     }
-    .offcanvas a {
+    .drawer > a {
       color: #fff;
       font-weight: 700;
-      font-size: 16px;
-      padding: 13px 30px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      font-size: 18px;
+      padding: 14px 28px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.14);
     }
-    .offcanvas a:hover {
+    .drawer > a:hover {
       background: var(--blue-dark);
     }
-    .offcanvas .close {
+    .drawer .close {
       position: absolute;
       top: 18px;
       right: 18px;
@@ -211,34 +221,63 @@ import { Icon } from '../shared/icon';
       border: 0;
       color: #fff;
       cursor: pointer;
+      padding: 6px;
+    }
+    .drawer-info {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 26px 28px 0;
+      color: #fff;
+      font-size: 15px;
+    }
+    .drawer-info a,
+    .drawer-info span {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
     }
 
     @media (max-width: 1024px) {
-      .actions {
+      .nav {
         display: none;
       }
       .hamburger {
         display: block;
       }
-      .main-header {
-        height: 100px;
+    }
+    @media (max-width: 767px) {
+      .infobar {
+        display: none;
       }
-      .main-header .logo img {
-        width: 140px;
-      }
-      .sticky {
+      .bar {
         height: 64px;
+        gap: 8px;
       }
-      .sticky .logo img {
-        width: 90px;
+      .logo img {
+        width: 104px;
+      }
+      .ctas {
+        gap: 6px;
+      }
+      .ctas .btn {
+        padding: 10px 14px;
+        font-size: 15px;
+      }
+      .long {
+        display: none;
+      }
+      .short {
+        display: inline;
       }
     }
-    @media (max-width: 600px) {
-      .topbar {
-        font-size: 11px;
+    @media (max-width: 359px) {
+      .logo img {
+        width: 86px;
       }
-      .topbar-info {
-        gap: 14px;
+      .ctas .btn {
+        padding: 9px 10px;
+        font-size: 14px;
       }
     }
   `,
@@ -250,7 +289,7 @@ export class Header {
 
   @HostListener('window:scroll')
   onScroll() {
-    this.scrolled.set(window.scrollY > 180);
+    this.scrolled.set(window.scrollY > 10);
   }
 
   @HostListener('document:keydown.escape')

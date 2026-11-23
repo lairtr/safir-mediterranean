@@ -12,16 +12,16 @@ import { Icon } from '../shared/icon';
   styles: `
     button {
       position: fixed;
-      right: 20px;
-      bottom: 20px;
-      width: 38px;
-      height: 38px;
+      right: 7px;
+      bottom: 7px;
+      width: 45px;
+      height: 50px;
       display: grid;
       place-items: center;
       border: 0;
-      border-radius: 3px;
-      background: rgba(210, 210, 210, 0.9);
-      color: #333;
+      border-radius: 5px;
+      background: #eee;
+      color: #000;
       cursor: pointer;
       opacity: 0;
       visibility: hidden;
@@ -29,12 +29,17 @@ import { Icon } from '../shared/icon';
       z-index: 40;
     }
     button.show {
-      opacity: 1;
+      opacity: 0.5;
       visibility: visible;
     }
     button:hover {
-      background: var(--blue);
-      color: #fff;
+      opacity: 1;
+    }
+    /* On phones the sticky header already gives quick access; avoid covering buttons */
+    @media (max-width: 767px) {
+      button {
+        display: none;
+      }
     }
   `,
 })

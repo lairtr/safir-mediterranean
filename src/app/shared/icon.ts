@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 
-export type IconName = 'pin' | 'phone' | 'clock' | 'instagram' | 'menu' | 'close' | 'chevron-up';
+export type IconName = 'pin' | 'phone' | 'clock' | 'instagram' | 'menu' | 'close' | 'chevron-up' | 'pause' | 'play' | 'arrow-right' | 'image' | 'directions';
 
 /** Small inline SVG icon set (replaces Font Awesome from the WordPress site). */
 @Component({
@@ -38,6 +38,33 @@ export type IconName = 'pin' | 'phone' | 'clock' | 'instagram' | 'menu' | 'close
       @case ('close') {
         <svg viewBox="0 0 24 24" [attr.width]="size()" [attr.height]="size()" aria-hidden="true" focusable="false" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
           <path d="M5 5l14 14M19 5L5 19" />
+        </svg>
+      }
+      @case ('image') {
+        <svg viewBox="0 0 24 24" [attr.width]="size()" [attr.height]="size()" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="16" rx="2" />
+          <circle cx="9" cy="10" r="2" />
+          <path d="M21 17l-5-5-9 8" />
+        </svg>
+      }
+      @case ('directions') {
+        <svg viewBox="0 0 24 24" [attr.width]="size()" [attr.height]="size()" aria-hidden="true" focusable="false">
+          <path fill="currentColor" d="M21.7 11.3l-9-9a1 1 0 0 0-1.4 0l-9 9a1 1 0 0 0 0 1.4l9 9a1 1 0 0 0 1.4 0l9-9a1 1 0 0 0 0-1.4zM14 14.5V12h-4v3H8v-4a1 1 0 0 1 1-1h5V7.5l3.5 3.5z" />
+        </svg>
+      }
+      @case ('pause') {
+        <svg viewBox="0 0 24 24" [attr.width]="size()" [attr.height]="size()" aria-hidden="true" focusable="false">
+          <path fill="currentColor" d="M6 4h4v16H6zM14 4h4v16h-4z" />
+        </svg>
+      }
+      @case ('play') {
+        <svg viewBox="0 0 24 24" [attr.width]="size()" [attr.height]="size()" aria-hidden="true" focusable="false">
+          <path fill="currentColor" d="M7 4v16l13-8z" />
+        </svg>
+      }
+      @case ('arrow-right') {
+        <svg viewBox="0 0 24 24" [attr.width]="size()" [attr.height]="size()" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14M13 6l6 6-6 6" />
         </svg>
       }
       @case ('chevron-up') {
