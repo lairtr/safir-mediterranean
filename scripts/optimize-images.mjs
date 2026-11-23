@@ -20,11 +20,13 @@ const RULES = [
   { match: /^dish-/, widths: [480, 960], aspect: 1 },
   { match: /^dining-room/, widths: [600, 1200], aspect: 4 / 5 },
   { match: /^ig-/, widths: [320, 640], aspect: 1 },
+  { match: /^badge-/, widths: [240, 480] },
 ];
 
 await mkdir(OUT, { recursive: true });
 for (const file of (await readdir(SRC)).filter((f) => /\.(jpe?g|png)$/i.test(f)).sort()) {
   const { name } = parse(file);
+  if (name === 'icon') continue; // handled below
   const rule = RULES.find((r) => r.match.test(name));
   if (!rule) {
     console.warn(`? ${file}: no rule, skipped`);
@@ -45,3 +47,19 @@ for (const file of (await readdir(SRC)).filter((f) => /\.(jpe?g|png)$/i.test(f))
   }
   console.log(`✓ ${name} (${srcW}x${srcH}) -> ${made.join(', ')}`);
 }
+
+// Site icons from the bird mark (image-src/icon.jpg) — served from the site root
+const PUBLIC = join(ROOT, 'public');
+const icon = sharp(join(SRC, 'icon.jpg')).flatten({ background: '#ffffff' });
+for (const [file, size] of [['favicon-32.png', 32], ['icon-192.png', 192], ['apple-touch-icon.png', 180]]) {
+  await icon.clone().resize(size, size).png({ compressionLevel: 9 }).toFile(join(PUBLIC, file));
+}
+console.log('✓ icons -> favicon-32.png, icon-192.png, apple-touch-icon.png');
+
+// Link-preview image (JPEG: some apps don't show WebP previews)
+await sharp(join(SRC, 'hero-masa.jpeg'))
+  .rotate()
+  .resize(1200, 630, { fit: 'cover' })
+  .jpeg({ quality: 82, mozjpeg: true })
+  .toFile(join(ROOT, 'public', 'images', 'og-image.jpg'));
+console.log('✓ og-image.jpg (1200x630)');

@@ -6,27 +6,40 @@
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Where Istanbul meets Long Island City. Turkish and Mediterranean restaurant at 47-31 Vernon Blvd, Long Island City, NY.">
-  <link rel="icon" type="image/png" href="images/logo.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <!-- Self-hosted fonts (Latin subset, SIL Open Font License) in public/fonts.
+       Declared here so the relative URLs follow <base href> on any host. -->
+  <style>
+    @font-face { font-family: 'Lato'; font-weight: 400; font-display: swap; src: url('fonts/lato-400.woff2') format('woff2'); }
+    @font-face { font-family: 'Lato'; font-weight: 700; font-display: swap; src: url('fonts/lato-700.woff2') format('woff2'); }
+    @font-face { font-family: 'Lato'; font-weight: 900; font-display: swap; src: url('fonts/lato-900.woff2') format('woff2'); }
+    @font-face { font-family: 'Berkshire Swash'; font-weight: 400; font-display: swap; src: url('fonts/berkshire-swash-400.woff2') format('woff2'); }
+  </style>
+  <link rel="preload" as="font" type="font/woff2" href="fonts/berkshire-swash-400.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="fonts/lato-400.woff2" crossorigin>
   <link rel="preload" as="image" href="images/opt/hero-masa-1600.webp" imagesrcset="images/opt/hero-masa-640.webp 640w, images/opt/hero-masa-1024.webp 1024w, images/opt/hero-masa-1600.webp 1600w, images/opt/hero-masa-2400.webp 2400w, images/opt/hero-masa-3024.webp 3024w" imagesizes="100vw" fetchpriority="high">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Berkshire+Swash&family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
   <meta name="theme-color" content="#266ab5">
   <meta property="og:type" content="restaurant">
+  <meta property="og:site_name" content="Safir Mediterranean">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
   <meta property="og:title" content="Safir Mediterranean | Turkish &amp; Mediterranean Restaurant in Long Island City">
   <meta property="og:description" content="Where Istanbul meets Long Island City. Kebabs, pides and mezes at 47-31 Vernon Blvd. Order online or visit us.">
-  <meta property="og:image" content="https://safir-mediterranean.com/images/opt/hero-masa-1600.webp">
+  <meta property="og:image" content="__SITE_URL__images/og-image.jpg">
   <!-- Structured data so search engines can show address, phone and menu -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Restaurant",
     "name": "Safir Mediterranean",
-    "url": "https://safir-mediterranean.com/",
-    "image": "https://safir-mediterranean.com/images/opt/hero-masa-1600.webp",
+    "url": "__SITE_URL__",
+    "image": "__SITE_URL__images/og-image.jpg",
     "telephone": "+1-347-924-9152",
     "servesCuisine": ["Turkish", "Mediterranean"],
-    "hasMenu": "https://safir-mediterranean.com/menu",
+    "hasMenu": "__SITE_URL__menu/",
     "openingHoursSpecification": [{
       "@type": "OpeningHoursSpecification",
       "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],

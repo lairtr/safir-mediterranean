@@ -105,6 +105,9 @@ import { OpenStatus } from '../shared/open-status';
       align-items: center;
       gap: 7px;
     }
+    .infobar a {
+      padding: 6px 0; /* 24px+ tap target */
+    }
     .infobar a:hover {
       text-decoration: underline;
     }

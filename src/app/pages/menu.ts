@@ -1,6 +1,6 @@
-import { Component, ElementRef, computed, inject, signal, viewChild } from '@angular/core';
+import { Component, DOCUMENT, DestroyRef, ElementRef, computed, inject, signal, viewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { MENUS, MENU_FOOTNOTES, Menu } from '../menu-data';
+import { MENUS, MENU_FOOTNOTES, Menu, MenuItem } from '../menu-data';
 import { SITE } from '../site-data';
 import { Icon } from '../shared/icon';
 
@@ -475,6 +475,21 @@ export class MenuPage {
   readonly active = computed(() => this.menus.find((m) => m.id === this.activeId()) ?? this.menus[0]);
   readonly viewerOpen = signal(false);
 
+  constructor() {
+    // Menu structured data (schema.org) so search engines can show dishes and
+    // prices. Generated from menu-data.ts; written into the prerendered HTML.
+    const doc = inject(DOCUMENT);
+    let script = doc.getElementById('menu-jsonld') as HTMLScriptElement | null;
+    if (!script) {
+      script = doc.createElement('script');
+      script.id = 'menu-jsonld';
+      script.type = 'application/ld+json';
+      doc.head.appendChild(script);
+    }
+    script.textContent = JSON.stringify(menuJsonLd());
+    inject(DestroyRef).onDestroy(() => doc.getElementById('menu-jsonld')?.remove());
+  }
+
   select(m: Menu) {
     this.activeId.set(m.id);
     this.router.navigate([], {
@@ -496,4 +511,35 @@ export class MenuPage {
   onDialogClick(e: MouseEvent) {
     if (e.target === this.dialog().nativeElement) this.dialog().nativeElement.close();
   }
+}
+
+function menuJsonLd() {
+  const offers = (item: MenuItem) =>
+    item.prices
+      ? item.prices.map((p) => ({ '@type': 'Offer', name: p.label, price: p.price, priceCurrency: 'USD' }))
+      : item.price
+        ? { '@type': 'Offer', price: item.price, priceCurrency: 'USD' }
+        : undefined;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Menu',
+    name: 'Safir Mediterranean Menu',
+    inLanguage: 'en',
+    hasMenuSection: MENUS.map((m) => ({
+      '@type': 'MenuSection',
+      name: m.label,
+      description: m.note,
+      hasMenuSection: m.sections.map((s) => ({
+        '@type': 'MenuSection',
+        name: s.title,
+        description: s.note,
+        hasMenuItem: s.items.map((i) => ({
+          '@type': 'MenuItem',
+          name: i.qty ? `${i.name} (${i.qty})` : i.name,
+          description: i.desc,
+          offers: offers(i),
+        })),
+      })),
+    })),
+  };
 }

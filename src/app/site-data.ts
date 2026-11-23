@@ -53,7 +53,7 @@ export const SITE = {
 
   cateringUrl: 'https://www.ezcater.com/catering/pvt/safir-mediterranean-3?fcv=1',
 
-  copyright: '© 2022 Safir Mediterranean',
+  copyright: `© ${new Date().getFullYear()} Safir Mediterranean`,
   credit: { label: 'Developed by Authorize Local', url: 'https://www.authorizelocal.com' },
 
   logo: 'images/logo.png',
@@ -80,6 +80,29 @@ export const SITE = {
     },
   },
 
+  // Google rating and hand-picked reviews, quoted word for word from Google Maps.
+  reviews: {
+    rating: 4.6,
+    googleUrl: 'https://maps.google.com/?cid=15874012287427769659',
+    items: [
+      {
+        name: 'Adriana Moronta',
+        stars: 5,
+        text: 'Just WOW! First time trying Turkish food and it was amazing!!! One of my best meals, plus our waitress Gamzer was exceptional. We also met the owner Cliff and hands down to his hospitality and attention. Do yourself a favor and try this place out! We are definitely coming back.',
+      },
+      {
+        name: 'Fey',
+        stars: 5,
+        text: 'This place is the best Turkish restaurant in NYC, hands down! Doner was amazing and they use actual meat not ground beef. Lahmacun is as crispy and fresh always. Service is amazing as well. Highly recommend!',
+      },
+      {
+        name: 'Stephanie Mendez',
+        stars: 5,
+        text: 'This place was SO TASTY. I was looking for a light lunch. I ordered a Turkish coffee, lentil soup, rice, and some lavash bread. The Turkish coffee was so robust and my favorite part of the entire meal 🤤The labneh and the side of bread were complimentary and so flavorful! The lavash was beautifully flaky and had the slightest char on it. Would recommend 10/10!',
+      },
+    ],
+  },
+
   journey: {
     title: 'From Istanbul to Long Island City',
     text: 'Turkish flavors that traveled about 5,000 miles — from the Bosphorus to Vernon Blvd.',
@@ -104,5 +127,5 @@ export const SITE = {
     { name: 'ChowNow', logo: 'images/chownow.jpg', url: 'https://www.chownow.com/order/37296/locations/56742' },
   ],
 
-  restaurantGuruBadge: 'images/restaurant-guru.png',
+  restaurantGuruBadge: { ...img('badge-restaurant-guru', [240, 480]), alt: 'Recommended on Restaurant Guru 2023' },
 } as const;

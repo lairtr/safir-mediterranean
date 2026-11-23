@@ -49,6 +49,52 @@ import { HeroSlider } from './hero-slider';
     </section>
     -->
 
+    <!-- Reviews (quoted word for word from Google) -->
+    <section class="reviews" aria-labelledby="reviews-title">
+      <div class="container">
+        <header class="head">
+          <h2 id="reviews-title" class="section-title">What Our Guests Say</h2>
+          <a class="rating" [href]="site.reviews.googleUrl" target="_blank" rel="noopener">
+            <app-icon name="google" [size]="22" />
+            <strong>{{ site.reviews.rating }}</strong>
+            <!-- grey stars with gold stars on top, clipped to the rating (4.6/5) -->
+            <span class="stars" aria-hidden="true">
+              <span class="stars-base">
+                @for (i of [1, 2, 3, 4, 5]; track i) {
+                  <app-icon name="star" [size]="18" />
+                }
+              </span>
+              <span class="stars-fill" [style.width.%]="(site.reviews.rating / 5) * 100">
+                @for (i of [1, 2, 3, 4, 5]; track i) {
+                  <app-icon name="star" [size]="18" />
+                }
+              </span>
+            </span>
+            <span class="sr-only">out of 5 stars</span>
+            <span class="on">on Google</span>
+          </a>
+        </header>
+        <ul class="review-list">
+          @for (r of site.reviews.items; track r.name) {
+            <li>
+              <figure class="review">
+                <div class="review-stars" [attr.aria-label]="r.stars + ' out of 5 stars'" role="img">
+                  @for (i of [1, 2, 3, 4, 5]; track i) {
+                    <app-icon name="star" [size]="16" />
+                  }
+                </div>
+                <blockquote>{{ r.text }}</blockquote>
+                <figcaption>{{ r.name }} <span>· Google review</span></figcaption>
+              </figure>
+            </li>
+          }
+        </ul>
+        <div class="center">
+          <a class="btn btn-outline" [href]="site.reviews.googleUrl" target="_blank" rel="noopener">Read more reviews on Google</a>
+        </div>
+      </div>
+    </section>
+
     <!-- Ordering -->
     <section class="order shape-top" aria-labelledby="order-title">
       <div class="container order-inner">
@@ -179,8 +225,105 @@ import { HeroSlider } from './hero-slider';
     }
     */
 
+    /* Reviews */
+    .reviews {
+      background: var(--sand);
+      padding: 88px 0 96px;
+    }
+    .rating {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 14px;
+      padding: 8px 16px;
+      background: #fff;
+      border-radius: 999px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+      color: var(--ink);
+      font-size: 17px;
+    }
+    .rating strong {
+      font-size: 20px;
+      font-weight: 900;
+    }
+    .rating:hover .on {
+      text-decoration: underline;
+    }
+    .review-stars {
+      display: inline-flex;
+      color: #f5b301;
+    }
+    .stars {
+      position: relative;
+      display: inline-flex;
+    }
+    .stars-base {
+      display: inline-flex;
+      color: #d9d4cc;
+    }
+    .stars-fill {
+      position: absolute;
+      inset: 0 auto 0 0;
+      display: inline-flex;
+      overflow: hidden;
+      white-space: nowrap;
+      color: #f5b301;
+    }
+    .on {
+      color: var(--muted);
+    }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+    .review-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .review {
+      margin: 0;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 28px;
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+    blockquote {
+      flex: 1;
+      margin: 0;
+      font-size: 16.5px;
+      line-height: 1.6;
+      color: var(--ink);
+    }
+    blockquote::before {
+      content: '“';
+    }
+    blockquote::after {
+      content: '”';
+    }
+    figcaption {
+      font-weight: 900;
+      color: var(--ink);
+    }
+    figcaption span {
+      font-weight: 400;
+      color: var(--muted);
+    }
+
     /* Order */
     .order {
+      --shape-color: var(--sand);
       background: var(--blue);
       color: #fff;
       padding: 100px 0 96px;
@@ -283,14 +426,23 @@ import { HeroSlider } from './hero-slider';
       .grid {
         grid-template-columns: repeat(3, 1fr);
       }
+      .review-list {
+        grid-template-columns: 1fr;
+        max-width: 640px;
+        margin: 0 auto;
+      }
       .visit-inner {
         grid-template-columns: 1fr;
       }
     }
     @media (max-width: 767px) {
       .dishes,
+      .reviews,
       .visit {
         padding: 60px 0;
+      }
+      .review {
+        padding: 22px;
       }
       /* Journey map (commented out). On phones the map is zoomed so the two
          cities sit near the screen edges (they're at ~19% and ~85% of its width).

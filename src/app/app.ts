@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Seo } from './seo';
 import { RouterOutlet } from '@angular/router';
 import { Header } from './layout/header';
 import { Footer } from './layout/footer';
@@ -20,4 +21,8 @@ import { InstagramStrip } from './layout/instagram-strip';
     <app-scroll-top />
   `,
 })
-export class App {}
+export class App {
+  constructor() {
+    inject(Seo).init();
+  }
+}

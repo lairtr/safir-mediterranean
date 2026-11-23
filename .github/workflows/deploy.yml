@@ -40,11 +40,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Work out base href
+      - name: Work out base href and site URL
         id: base
         env:
           INPUT_BASE: ${{ inputs.base_href }}
           REPO_NAME: ${{ github.event.repository.name }}
+          OWNER: ${{ github.repository_owner }}
         run: |
           if [ -n "$INPUT_BASE" ]; then
             base="$INPUT_BASE"
@@ -56,22 +57,22 @@ jobs:
           # must start and end with a slash
           [[ "$base" == /* ]] || base="/$base"
           [[ "$base" == */ ]] || base="$base/"
+          if [ -f public/CNAME ]; then
+            host="$(tr -d '[:space:]' < public/CNAME)"
+          else
+            host="${OWNER,,}.github.io"
+          fi
           echo "href=$base" >> "$GITHUB_OUTPUT"
+          echo "url=https://${host}${base}" >> "$GITHUB_OUTPUT"
           echo "Base href: $base"
+          echo "Site URL:  https://${host}${base}"
 
-      - name: Build
+      - name: Build (prerenders Home, Menu and Order Online to static HTML)
         run: npx ng build --configuration production --base-href "${{ steps.base.outputs.href }}"
 
       - name: Prepare for GitHub Pages
-        working-directory: dist/safir/browser
-        run: |
-          # Pages has no server-side routing: serve the app for unknown paths
-          # so links like /menu work when opened directly or refreshed.
-          cp index.html 404.html
-          # Serve files as-is (skip Jekyll processing).
-          touch .nojekyll
-          # Server configs for other hosts aren't used by Pages.
-          rm -f _redirects .htaccess
+        # Absolute URLs, sitemap.xml, robots.txt, 404.html fallback, .nojekyll
+        run: node scripts/finalize-static.mjs "${{ steps.base.outputs.url }}"
 
       - name: Publish to gh-pages branch
         working-directory: dist/safir/browser
@@ -88,16 +89,11 @@ jobs:
 
       - name: Summary
         env:
-          BASE: ${{ steps.base.outputs.href }}
+          SITE_URL: ${{ steps.base.outputs.url }}
         run: |
-          owner="${GITHUB_REPOSITORY_OWNER,,}"
           {
             echo "### Website published"
             echo ""
             echo "Built \`${GITHUB_SHA::7}\` and pushed it to the \`gh-pages\` branch."
-            if [ -f public/CNAME ]; then
-              echo "Live at: https://$(cat public/CNAME)/"
-            else
-              echo "Live at: https://${owner}.github.io${BASE} (Pages takes about a minute to update)"
-            fi
+            echo "Live at: ${SITE_URL} (Pages takes about a minute to update)"
           } >> "$GITHUB_STEP_SUMMARY"

@@ -89,7 +89,15 @@ import { Icon } from '../shared/icon';
       margin: 0;
       padding: 0;
       display: grid;
-      gap: 8px;
+      gap: 2px;
+    }
+    /* 24px+ tap targets */
+    li a {
+      display: inline-block;
+      padding: 4px 0;
+    }
+    li:not(:has(a)) {
+      padding: 4px 0;
     }
     a:hover {
       color: #fff;
@@ -115,6 +123,8 @@ import { Icon } from '../shared/icon';
       margin: 0;
     }
     .bottom a {
+      display: inline-block;
+      padding: 4px 0;
       font-weight: 700;
       color: #fff;
     }

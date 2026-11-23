@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, OnDestroy, afterNextRender, signal } from '@angular/core';
 import { SITE } from '../site-data';
 import { Icon } from '../shared/icon';
 import { OpenStatus } from '../shared/open-status';
@@ -132,6 +132,9 @@ import { OpenStatus } from '../shared/open-status';
       align-items: center;
       gap: 8px;
     }
+    .facts a {
+      padding: 4px 0; /* 24px+ tap target */
+    }
     .facts a:hover {
       text-decoration: underline;
     }
@@ -193,19 +196,22 @@ import { OpenStatus } from '../shared/open-status';
     }
   `,
 })
-export class HeroSlider implements OnInit, OnDestroy {
+export class HeroSlider implements OnDestroy {
   readonly site = SITE;
   readonly slides = SITE.heroSlides;
   readonly current = signal(0);
   readonly playing = signal(true);
   private timer?: ReturnType<typeof setInterval>;
 
-  ngOnInit() {
-    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
-      this.playing.set(false);
-      return;
-    }
-    this.start();
+  constructor() {
+    // Browser only: no slideshow timer while prerendering at build time.
+    afterNextRender(() => {
+      if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
+        this.playing.set(false);
+        return;
+      }
+      this.start();
+    });
   }
 
   toggle() {
