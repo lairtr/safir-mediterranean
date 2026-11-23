@@ -1,0 +1,10 @@
+# Apache: send every non-file URL to index.html so Angular routes
+# (/menu, /order-online, ...) work on refresh and direct links.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
