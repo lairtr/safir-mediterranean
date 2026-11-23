@@ -48,12 +48,15 @@ export const SITE = {
   logo: 'images/logo.png',
   logoWhite: 'images/logo-white.png',
 
-  // Hero carousel: same three photos and framing as the original site.
-  // Responsive WebP versions are generated from the full-resolution masters in
-  // image-src/ by `npm run optimize-images`.
+  // Hero carousel. Responsive WebP versions are generated from the
+  // full-resolution masters in image-src/ by `npm run optimize-images`.
+  // `position` is the CSS object-position used when the photo is cropped.
   heroSlides: [
     { ...img('hero-masa', [640, 1024, 1600, 2400, 3024]), alt: 'A table full of Safir dishes: pides, lahmacun, kebabs and mezes', position: 'center' },
+    { ...img('hero-mix-grill', [640, 1024, 1600, 2400, 3024]), alt: 'Mix grill platter with lamb and chicken adana, chops, shish and doner', position: '50% 45%' },
     { ...img('hero-lamb-chops', [640, 1024, 1600, 2400, 3024]), alt: 'Grilled lamb chops with rice', position: '0% 70%' },
+    { ...img('hero-iskender', [640, 1024, 1600, 2400, 3024]), alt: 'Iskender kebab with tomato sauce and garlic yogurt', position: '50% 55%' },
+    { ...img('hero-mixed-appetizers', [640, 1024, 1600, 2400, 3024]), alt: 'Mixed appetizers: hummus, babaghanoush, haydari and muhammara', position: '50% 30%' },
     { ...img('hero-homemade-bread', [640, 1024, 1600, 2400, 3024]), alt: 'Freshly baked homemade bread', position: 'center' },
   ],
 
@@ -63,13 +66,18 @@ export const SITE = {
     about: {
       title: 'About Us',
       text: 'Safir Mediterranean offers a comfortable dining experience with a melding of authentic Turkish cuisine and culture.',
-      text2: 'We offer a wide range of delightful meals with Turkish and Mediterranean flavors, served in one of the most charming locations in Long Island City, NY.',
+      text2: '',
       image: { ...img('dining-room', [600, 1200]), alt: 'The Safir Mediterranean dining room' },
     },
     menu: {
       title: 'Signature Dishes',
-      text: 'Although our menu is most popular for its kebabs and pides, we offer a wide variety of healthy and vegetarian appetizers and main dishes.',
+      text: 'Our menu is most popular for its kebabs and pides, but we also offer a wide variety of healthy, vegetarian appetizers and main dishes.',
     },
+  },
+
+  journey: {
+    title: 'From Istanbul to Long Island City',
+    text: 'Turkish flavors that traveled about 5,000 miles — from the Bosphorus to Vernon Blvd.',
   },
 
   dishes: [

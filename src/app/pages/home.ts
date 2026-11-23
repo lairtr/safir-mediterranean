@@ -5,10 +5,11 @@ import { SITE } from '../site-data';
 import { Icon } from '../shared/icon';
 import { OpenStatus } from '../shared/open-status';
 import { HeroSlider } from './hero-slider';
+// import { JourneyMap } from '../shared/journey-map';
 
 @Component({
   selector: 'app-home',
-  imports: [RouterLink, HeroSlider, Icon, OpenStatus],
+  imports: [RouterLink, HeroSlider, Icon, OpenStatus /* , JourneyMap */],
   template: `
     <app-hero-slider />
 
@@ -34,6 +35,19 @@ import { HeroSlider } from './hero-slider';
         </div>
       </div>
     </section>
+
+    <!-- Istanbul ⇄ Long Island City map (commented out; uncomment this block,
+         the JourneyMap import above and the .journey styles below to restore)
+    <section class="journey" aria-labelledby="journey-title">
+      <div class="container">
+        <header class="head">
+          <h2 id="journey-title" class="section-title light">{{ site.journey.title }}</h2>
+          <p class="section-sub light">{{ site.journey.text }}</p>
+        </header>
+        <app-journey-map />
+      </div>
+    </section>
+    -->
 
     <!-- About -->
     <section id="about-us" class="about" aria-labelledby="about-title">
@@ -117,6 +131,13 @@ import { HeroSlider } from './hero-slider';
       margin-top: 40px;
     }
 
+    .light {
+      color: #fff;
+    }
+    .section-sub.light {
+      color: rgba(255, 255, 255, 0.85);
+    }
+
     /* Dishes */
     .dishes {
       padding: 88px 0 96px;
@@ -156,6 +177,23 @@ import { HeroSlider } from './hero-slider';
       font-weight: 900;
       font-size: 18px;
     }
+
+    /* Journey map (commented out)
+    .journey {
+      background: radial-gradient(ellipse at 50% 60%, #1d4a80 0%, #13325a 45%, #0b1f3a 100%);
+      color: #fff;
+      padding: 80px 0 56px;
+      overflow: hidden;
+    }
+    .journey .head {
+      max-width: 960px;
+      margin-bottom: 8px;
+    }
+    .journey app-journey-map {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    */
 
     /* About */
     .about {
@@ -199,12 +237,7 @@ import { HeroSlider } from './hero-slider';
       padding: 100px 0 96px;
       text-align: center;
     }
-    .light {
-      color: #fff;
-    }
-    .section-sub.light {
-      color: rgba(255, 255, 255, 0.85);
-    }
+
     .partners {
       list-style: none;
       margin: 40px auto 0;
@@ -315,6 +348,17 @@ import { HeroSlider } from './hero-slider';
       .visit {
         padding: 60px 0;
       }
+      /* Journey map (commented out). On phones the map is zoomed so the two
+         cities sit near the screen edges (they're at ~19% and ~85% of its width).
+      .journey {
+        padding: 56px 0 28px;
+      }
+      .journey app-journey-map {
+        width: 120%;
+        max-width: none;
+        margin-left: -12%;
+      }
+      */
       .order {
         padding: 72px 0 64px;
       }
