@@ -18,9 +18,6 @@ import { Icon } from '../shared/icon';
             <h2 id="ig-title" class="section-title">Follow Us on Instagram</h2>
             <a class="handle" [href]="site.instagram" target="_blank" rel="noopener">{{ site.instagramHandle }}</a>
           </div>
-          <a class="btn btn-primary follow" [href]="site.instagram" target="_blank" rel="noopener">
-            <app-icon name="instagram" [size]="18" /> Follow {{ site.instagramHandle }}
-          </a>
         </div>
 
         <ul class="grid">
@@ -111,11 +108,6 @@ import { Icon } from '../shared/icon';
       .grid {
         grid-template-columns: repeat(3, 1fr);
         gap: 6px;
-      }
-      .follow {
-        order: 2;
-        width: 100%;
-        margin-top: 4px;
       }
     }
   `,
