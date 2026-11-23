@@ -48,6 +48,9 @@ import { OpenStatus } from '../shared/open-status';
           <li class="wide-only">
             <a [href]="site.phone.tel"><app-icon name="phone" [size]="16" /> {{ site.phone.display }}</a>
           </li>
+          <li>
+            <a [href]="site.instagram" target="_blank" rel="noopener"><app-icon name="instagram" [size]="16" /> {{ site.instagramHandle }}</a>
+          </li>
         </ul>
       </div>
 

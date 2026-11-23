@@ -49,22 +49,6 @@ import { HeroSlider } from './hero-slider';
     </section>
     -->
 
-    <!-- About -->
-    <section id="about-us" class="about" aria-labelledby="about-title">
-      <div class="container about-inner">
-        <img class="about-img" [src]="home.about.image.src" [attr.srcset]="home.about.image.srcset" sizes="(max-width: 767px) 100vw, 480px" [alt]="home.about.image.alt" loading="lazy" decoding="async" width="600" height="750" />
-        <div class="about-text">
-          <h2 id="about-title" class="section-title">{{ home.about.title }}</h2>
-          <p class="lead">{{ home.about.text }}</p>
-          <p>{{ home.about.text2 }}</p>
-          <div class="about-actions">
-            <a class="btn btn-outline" routerLink="/" fragment="contact-us">Hours &amp; Location</a>
-            <a class="btn btn-outline" [href]="site.cateringUrl" target="_blank" rel="noopener">Order Catering</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- Ordering -->
     <section class="order shape-top" aria-labelledby="order-title">
       <div class="container order-inner">
@@ -195,43 +179,8 @@ import { HeroSlider } from './hero-slider';
     }
     */
 
-    /* About */
-    .about {
-      background: var(--sand);
-      padding: 96px 0;
-    }
-    .about-inner {
-      display: grid;
-      grid-template-columns: 480px 1fr;
-      gap: 72px;
-      align-items: center;
-    }
-    .about-img {
-      width: 100%;
-      aspect-ratio: 4 / 5;
-      object-fit: cover;
-      border-radius: var(--radius);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
-    }
-    .about-text p {
-      margin: 18px 0 0;
-      max-width: 60ch;
-    }
-    .about-text .lead {
-      font-size: 21px;
-      color: var(--ink);
-      margin-top: 22px;
-    }
-    .about-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 32px;
-    }
-
     /* Order */
     .order {
-      --shape-color: var(--sand);
       background: var(--blue);
       color: #fff;
       padding: 100px 0 96px;
@@ -334,17 +283,12 @@ import { HeroSlider } from './hero-slider';
       .grid {
         grid-template-columns: repeat(3, 1fr);
       }
-      .about-inner {
-        grid-template-columns: 1fr 1fr;
-        gap: 40px;
-      }
       .visit-inner {
         grid-template-columns: 1fr;
       }
     }
     @media (max-width: 767px) {
       .dishes,
-      .about,
       .visit {
         padding: 60px 0;
       }
@@ -372,15 +316,6 @@ import { HeroSlider } from './hero-slider';
       .dish span {
         font-size: 16px;
         padding: 28px 12px 10px;
-      }
-      .about-inner {
-        grid-template-columns: 1fr;
-      }
-      .about-img {
-        aspect-ratio: 4 / 3;
-      }
-      .about-text .lead {
-        font-size: 19px;
       }
       .partners {
         gap: 10px;

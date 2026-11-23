@@ -13,7 +13,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(
       routes,
       withInMemoryScrolling({ anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled' }),
-      // Lets "About Us" / "Contact Us" re-scroll when clicked twice.
+      // Lets "Visit" / "Contact Us" links re-scroll when clicked twice.
       withRouterConfig({ onSameUrlNavigation: 'reload' }),
     ),
   ],

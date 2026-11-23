@@ -19,6 +19,7 @@ const RULES = [
   { match: /^band-/, widths: [800, 1600, 2400] },
   { match: /^dish-/, widths: [480, 960], aspect: 1 },
   { match: /^dining-room/, widths: [600, 1200], aspect: 4 / 5 },
+  { match: /^ig-/, widths: [320, 640], aspect: 1 },
 ];
 
 await mkdir(OUT, { recursive: true });

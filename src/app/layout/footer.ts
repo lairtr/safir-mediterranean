@@ -20,7 +20,6 @@ import { Icon } from '../shared/icon';
             <li><a routerLink="/menu">Menu</a></li>
             <li><a routerLink="/order-online">Order Online</a></li>
             <li><a [href]="site.cateringUrl" target="_blank" rel="noopener">Catering</a></li>
-            <li><a routerLink="/" fragment="about-us">About Us</a></li>
           </ul>
         </nav>
 

@@ -39,6 +39,17 @@ export const SITE = {
   // The old WordPress site linked to two handles; safirmediterranean_lic
   // doesn't resolve, so only safir_lic is used.
   instagram: 'https://www.instagram.com/safir_lic/',
+  instagramHandle: '@safir_lic',
+  // Photos for the "Follow us" strip. These are the restaurant's own photos
+  // (not a live feed); each tile links to the Instagram profile.
+  instagramGrid: [
+    { ...img('ig-octopus', [320, 640]), alt: 'Grilled octopus' },
+    { ...img('ig-spinach-pide', [320, 640]), alt: 'Spinach pide' },
+    { ...img('ig-katmer', [320, 640]), alt: 'Katmer with pistachios and ice cream' },
+    { ...img('ig-salmon', [320, 640]), alt: 'Grilled salmon with arugula salad' },
+    { ...img('ig-sigara-borek', [320, 640]), alt: 'Sigara borek' },
+    { ...img('ig-balloon-bread', [320, 640]), alt: 'Balloon bread' },
+  ],
 
   cateringUrl: 'https://www.ezcater.com/catering/pvt/safir-mediterranean-3?fcv=1',
 
@@ -63,12 +74,6 @@ export const SITE = {
   intro: 'Authentic Turkish & Mediterranean kitchen in Long Island City',
 
   home: {
-    about: {
-      title: 'About Us',
-      text: 'Safir Mediterranean offers a comfortable dining experience with a melding of authentic Turkish cuisine and culture.',
-      text2: '',
-      image: { ...img('dining-room', [600, 1200]), alt: 'The Safir Mediterranean dining room' },
-    },
     menu: {
       title: 'Signature Dishes',
       text: 'Our menu is most popular for its kebabs and pides, but we also offer a wide variety of healthy, vegetarian appetizers and main dishes.',
