@@ -69,7 +69,7 @@ cd admin-api
 npx wrangler login
 npx wrangler secret put AIRTABLE_TOKEN        # paste the token
 npx wrangler secret put AIRTABLE_BASE_ID      # appUrmFp2FFEIXPv9
-node ../scripts/hash-password.mjs | npx wrangler secret put ADMIN_PASSWORD_HASH
+node ../scripts/hash-password.mjs             # asks for the admin password and saves its hash
 openssl rand -base64 48 | npx wrangler secret put SESSION_SECRET
 npx wrangler deploy
 ```
@@ -93,7 +93,10 @@ saves the current Airtable menu into the prerendered Menu page.
 ## Changing the password
 
 ```sh
-cd admin-api && node ../scripts/hash-password.mjs | npx wrangler secret put ADMIN_PASSWORD_HASH
+node scripts/hash-password.mjs
 ```
+
+It asks for the new password twice (typing is hidden) and saves only its hash
+to the Worker. The change takes effect immediately.
 
 To sign everyone out immediately, also replace `SESSION_SECRET`.

@@ -33,7 +33,7 @@ export const routes: Routes = [
     title: 'Order Online | Safir Mediterranean, Long Island City',
     data: {
       description:
-        'Order Safir Mediterranean for delivery or pickup on DoorDash, Seamless, Uber Eats, Fantuan or ChowNow, call (347) 924-9152, or book catering.',
+        'Order Safir Mediterranean for delivery or pickup on DoorDash, Seamless, Uber Eats or ChowNow, call (347) 924-9152, or book catering.',
     },
   },
   {

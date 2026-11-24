@@ -18,7 +18,6 @@ const ASSETS = {
   'doordash.png': `${WP}/uploads/2022/10/DoorDash.png`,
   'seamless.png': `${WP}/uploads/2022/10/Seamless.png`,
   'ubereats.png': `${WP}/uploads/2022/10/UberEats.png`,
-  'fantuan.png': `${WP}/uploads/2023/04/SQ8GRgW20Pj8VH6yLuC6stSHjdV1628530496111_200x200-e1682547767224.png`,
   'chownow.jpg': `${WP}/uploads/2023/05/Chownow-Logo-e1682955883519.jpg`,
   'menu/safir1.png': `${WP}/safir-menu/safir1.png`,
   'menu/safir2.png': `${WP}/safir-menu/safir2.png`,

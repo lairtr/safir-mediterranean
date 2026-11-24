@@ -7,6 +7,7 @@
 //   POST /login               { password } → 8-hour session token
 //   GET  /admin/menu          every row, including hidden ones   (session)
 //   POST/PATCH/DELETE /records/<list>[/<record id>]               (session)
+//   POST /records/<list>/move { ids, to }  move rows to another parent (session)
 //
 // Secrets (wrangler secret put NAME):
 //   AIRTABLE_TOKEN       Airtable personal access token (data.records:read + write, this base only)
@@ -21,6 +22,7 @@ const SESSION_HOURS = 8;
 const MAX_FAILS = 5; // per IP, then locked for LOCK_MINUTES
 const LOCK_MINUTES = 15;
 const PUBLIC_CACHE_SECONDS = 60;
+const MAX_MOVE = 200;
 const fails = new Map(); // ip -> { count, until } (per Worker instance; see README for a stricter rule)
 let publicCache = null; // { at, body } (per Worker instance)
 
@@ -180,6 +182,37 @@ async function update(at, list, rid, body) {
   return at.update(list, rid, fields);
 }
 
+/**
+ * Moves rows (items, or categories) to another parent. They go to the end of
+ * the target, keeping their current order. Airtable takes 10 rows per call.
+ */
+async function move(at, list, body) {
+  const parent = LISTS[list].parent;
+  if (!parent) throw new HttpError(400, 'These rows cannot be moved');
+  const { ids, to } = body ?? {};
+  if (!Array.isArray(ids) || !ids.length || ids.length > MAX_MOVE || new Set(ids).size !== ids.length || !ids.every((id) => typeof id === 'string' && RECORD_ID.test(id)))
+    throw new HttpError(400, `Choose between 1 and ${MAX_MOVE} rows to move`);
+  if (typeof to !== 'string' || !RECORD_ID.test(to)) throw new HttpError(400, 'Choose where to move them');
+  await ensureParentExists(at, list, to);
+
+  const rows = await at.listAll(list); // sorted by Sort Order
+  const byId = new Map(rows.map((r) => [r._rid, r]));
+  const missing = ids.filter((id) => !byId.has(id));
+  if (missing.length) throw new HttpError(400, `${missing.length} of them no longer exist. Reload the page.`);
+  const moving = rows.filter((r) => ids.includes(r._rid) && r[parent.key] !== to);
+  // Rows already in the target (selected or not) stay put; the rest go after them.
+  let next = Math.max(0, ...rows.filter((r) => r[parent.key] === to).map((r) => r.sortOrder ?? 0));
+  const updates = moving.map((r) => ({
+    id: r._rid,
+    fields: toFields(list, { [parent.key]: to, sortOrder: (next += 10) }, { partial: true }),
+  }));
+  for (let i = 0; i < updates.length; i += 10) {
+    await at.updateMany(list, updates.slice(i, i + 10));
+    if (i + 10 < updates.length) await new Promise((r) => setTimeout(r, 220)); // Airtable: 5 requests/second
+  }
+  return { moved: updates.length, alreadyThere: ids.length - updates.length };
+}
+
 async function remove(at, list, rid) {
   const rec = await at.get(list, rid);
   if (rec.childCount) {
@@ -216,6 +249,13 @@ export default {
 
       const at = airtableFor(env);
       if (url.pathname === '/admin/menu' && request.method === 'GET') return json(await at.listEverything(), 200, cors);
+
+      const mv = url.pathname.match(/^\/records\/([A-Za-z]+)\/move$/);
+      if (mv && Object.hasOwn(LISTS, mv[1]) && request.method === 'POST') {
+        const result = await move(at, mv[1], await readJson(request));
+        publicCache = null;
+        return json(result, 200, cors);
+      }
 
       const m = url.pathname.match(/^\/records\/([A-Za-z]+)(?:\/([A-Za-z0-9]+))?$/);
       if (m && Object.hasOwn(LISTS, m[1]) && (!m[2] || RECORD_ID.test(m[2]))) {

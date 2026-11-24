@@ -1,4 +1,4 @@
-import { Component, DOCUMENT, DestroyRef, ElementRef, afterNextRender, computed, effect, inject, signal, viewChild } from '@angular/core';
+import { Component, DOCUMENT, DestroyRef, afterNextRender, computed, effect, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MENU_FOOTNOTES, Menu, MenuItem } from '../menu-data';
 import { MenuStore } from '../menu-store';
@@ -6,8 +6,7 @@ import { SITE } from '../site-data';
 import { Icon } from '../shared/icon';
 
 /**
- * Text menu (readable on phones, searchable, accessible) with the original
- * printed menu images still available in a viewer.
+ * Text menu: readable on phones, searchable and accessible.
  * The selected menu is kept in the URL (?m=breakfast) so it can be shared.
  */
 @Component({
@@ -33,11 +32,6 @@ import { Icon } from '../shared/icon';
               <span class="long">{{ m.label }}</span><span class="short">{{ m.shortLabel }}</span>
             </button>
           }
-        </div>
-        <div>
-          <button type="button" class="printed-link" (click)="openPrinted()">
-            <app-icon name="image" [size]="18" /> View the printed menu
-          </button>
         </div>
       </div>
     </section>
@@ -100,30 +94,6 @@ import { Icon } from '../shared/icon';
       </div>
     </div>
 
-    <!-- Printed menu viewer -->
-    <dialog #printed class="viewer" aria-labelledby="viewer-title" (click)="onDialogClick($event)" (close)="viewerOpen.set(false)">
-      <div class="viewer-bar">
-        <h2 id="viewer-title">{{ active().label }} — printed menu</h2>
-        <button type="button" class="close" aria-label="Close" (click)="printed.close()">
-          <app-icon name="close" [size]="22" />
-        </button>
-      </div>
-      <div class="viewer-body">
-        @if (viewerOpen()) {
-          @for (img of active().images; track img.src; let i = $index) {
-            <figure>
-              <img [src]="img.src" [alt]="img.alt" />
-              <figcaption>
-                @if (active().images.length > 1) {
-                  Page {{ i + 1 }} of {{ active().images.length }} ·
-                }
-                <a [href]="img.src" target="_blank" rel="noopener">Open full size</a>
-              </figcaption>
-            </figure>
-          }
-        }
-      </div>
-    </dialog>
   `,
   styles: `
     .intro {
@@ -201,24 +171,6 @@ import { Icon } from '../shared/icon';
     }
     .cats li button:hover {
       background: #ece5db;
-    }
-    .printed-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 18px;
-      font: 700 16px var(--sans);
-      color: var(--blue);
-      background: none;
-      border: 0;
-      padding: 8px;
-      min-height: 44px;
-      cursor: pointer;
-      text-decoration: underline;
-      text-underline-offset: 3px;
-    }
-    .printed-link:hover {
-      color: var(--blue-dark);
     }
     .short {
       display: none;
@@ -340,71 +292,6 @@ import { Icon } from '../shared/icon';
       margin-top: 18px;
     }
 
-    /* Viewer */
-    .viewer {
-      width: min(920px, 100vw);
-      max-width: 100vw;
-      height: min(100dvh, 100vh);
-      max-height: 100dvh;
-      margin: 0 auto;
-      padding: 0;
-      border: 0;
-      background: #2a2f38;
-      color: #fff;
-    }
-    .viewer::backdrop {
-      background: rgba(0, 0, 0, 0.75);
-    }
-    .viewer[open] {
-      display: flex;
-      flex-direction: column;
-    }
-    .viewer-bar {
-      flex: none;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 10px 12px 10px 20px;
-      background: #1d2129;
-    }
-    .viewer-bar h2 {
-      color: #fff;
-      font-size: 16px;
-      font-weight: 700;
-    }
-    .viewer .close {
-      background: none;
-      border: 0;
-      color: #fff;
-      padding: 8px;
-      cursor: pointer;
-    }
-    .viewer-body {
-      flex: 1;
-      overflow-y: auto;
-      padding: 16px;
-      display: grid;
-      gap: 20px;
-      align-content: start;
-    }
-    figure {
-      margin: 0;
-    }
-    figure img {
-      width: 100%;
-      background: #fff;
-    }
-    figcaption {
-      margin-top: 8px;
-      font-size: 14px;
-      text-align: center;
-      color: rgba(255, 255, 255, 0.8);
-    }
-    figcaption a {
-      color: #fff;
-      text-decoration: underline;
-    }
 
     @media (max-width: 860px) {
       .items {
@@ -434,9 +321,6 @@ import { Icon } from '../shared/icon';
       .short {
         display: inline;
       }
-      .printed-link {
-        margin-top: 10px;
-      }
       .sec {
         padding-top: 28px;
         scroll-margin-top: 124px;
@@ -457,11 +341,9 @@ export class MenuPage {
   readonly footnotes = MENU_FOOTNOTES;
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
-  private readonly dialog = viewChild.required<ElementRef<HTMLDialogElement>>('printed');
 
   private readonly activeId = signal(this.route.snapshot.queryParamMap.get('m') ?? '');
   readonly active = computed(() => this.menus().find((m) => m.id === this.activeId()) ?? this.menus()[0]);
-  readonly viewerOpen = signal(false);
 
   constructor() {
     // Menu structured data (schema.org) so search engines can show dishes and
@@ -495,15 +377,6 @@ export class MenuPage {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  openPrinted() {
-    this.viewerOpen.set(true);
-    this.dialog().nativeElement.showModal();
-  }
-
-  /** Clicking the dark backdrop (outside the dialog box) closes it. */
-  onDialogClick(e: MouseEvent) {
-    if (e.target === this.dialog().nativeElement) this.dialog().nativeElement.close();
-  }
 }
 
 function menuJsonLd(menus: Menu[]) {

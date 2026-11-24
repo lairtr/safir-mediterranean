@@ -92,6 +92,10 @@ export class AdminApi {
   update(list: ListName, rid: string, record: Record<string, unknown>) {
     return this.call<unknown>('PATCH', `/records/${list}/${rid}`, record);
   }
+  /** Moves rows to another category (items) or menu (categories), at the end. */
+  move(list: ListName, ids: string[], to: string) {
+    return this.call<{ moved: number; alreadyThere: number }>('POST', `/records/${list}/move`, { ids, to });
+  }
   remove(list: ListName, rid: string) {
     return this.call<{ deleted: string }>('DELETE', `/records/${list}/${rid}`);
   }

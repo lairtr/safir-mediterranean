@@ -123,7 +123,6 @@ export const SITE = {
     { name: 'DoorDash', logo: 'images/doordash.png', url: 'https://www.doordash.com/store/safir-mediterranean-queens-2578388' },
     { name: 'Seamless', logo: 'images/seamless.png', url: 'https://www.seamless.com/menu/safir-47-31-vernon-blvd-queens/4380976' },
     { name: 'Uber Eats', logo: 'images/ubereats.png', url: 'https://www.ubereats.com/store/safir/ear8DddWSre9TdiRovGlqw' },
-    { name: 'Fantuan', logo: 'images/fantuan.png', url: 'https://www.fantuanorder.com/store/safir-mediterranean/us-13388' },
     { name: 'ChowNow', logo: 'images/chownow.jpg', url: 'https://www.chownow.com/order/37296/locations/56742' },
   ],
 

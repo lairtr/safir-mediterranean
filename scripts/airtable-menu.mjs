@@ -212,6 +212,11 @@ export function airtable(token, baseId) {
       const r = await call(`${tableOf(list)}/${encodeURIComponent(rid)}`, { method: 'PATCH', body: JSON.stringify({ fields }) });
       return fromRecord(list, r);
     },
+    /** Up to 10 records per call: [{ id, fields }] */
+    async updateMany(list, records) {
+      const r = await call(tableOf(list), { method: 'PATCH', body: JSON.stringify({ records }) });
+      return r.records.map((x) => fromRecord(list, x));
+    },
     async remove(list, rid) {
       await call(`${tableOf(list)}/${encodeURIComponent(rid)}`, { method: 'DELETE' });
     },

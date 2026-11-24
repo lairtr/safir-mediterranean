@@ -116,6 +116,16 @@ const money = (n?: number) => (n === undefined ? '' : `$${n.toFixed(2)}`);
               @for (g of itemGroups(); track g.category._rid) {
                 <section class="group">
                   <h2>
+                    @if (g.items.length) {
+                      <input
+                        type="checkbox"
+                        class="pick"
+                        [checked]="groupState(g.items) === 'all'"
+                        [indeterminate]="groupState(g.items) === 'some'"
+                        (change)="toggleGroup(g.items, checked($event))"
+                        [attr.aria-label]="'Select all items in ' + g.category.name"
+                      />
+                    }
                     {{ g.category.name }} <span class="muted">· {{ menuName(g.category.superCategory) }}</span>
                     @if (!g.category.visible) {
                       <span class="tag">Hidden</span>
@@ -123,7 +133,14 @@ const money = (n?: number) => (n === undefined ? '' : `$${n.toFixed(2)}`);
                   </h2>
                   <ul class="rows">
                     @for (i of g.items; track i._rid) {
-                      <li>
+                      <li class="pickable" [class.picked]="selected().has(i._rid)">
+                        <input
+                          type="checkbox"
+                          class="pick"
+                          [checked]="selected().has(i._rid)"
+                          (change)="toggle(i._rid, checked($event))"
+                          [attr.aria-label]="'Select ' + i.name"
+                        />
                         <button type="button" class="row" [class.dim]="!i.available" (click)="openEdit('items', i)">
                           <span class="row-main">
                             <strong>{{ i.name }}</strong>
@@ -148,10 +165,36 @@ const money = (n?: number) => (n === undefined ? '' : `$${n.toFixed(2)}`);
                   <h2 class="error-text">Not shown: no category</h2>
                   <ul class="rows">
                     @for (i of orphanItems(); track i._rid) {
-                      <li><button type="button" class="row" (click)="openEdit('items', i)"><strong>{{ i.name }}</strong></button></li>
+                      <li class="pickable" [class.picked]="selected().has(i._rid)">
+                        <input type="checkbox" class="pick" [checked]="selected().has(i._rid)" (change)="toggle(i._rid, checked($event))" [attr.aria-label]="'Select ' + i.name" />
+                        <button type="button" class="row" (click)="openEdit('items', i)"><strong>{{ i.name }}</strong></button>
+                      </li>
                     }
                   </ul>
                 </section>
+              }
+
+              @if (selected().size) {
+                <div class="move-bar" role="region" aria-label="Move selected items">
+                  <strong>{{ selected().size }} selected</strong>
+                  <label class="move-to">
+                    <span>Move to</span>
+                    <select (change)="moveTarget.set(val($event))" aria-label="Target category">
+                      <option value="" [selected]="!moveTarget()">Choose a category…</option>
+                      @for (s of data()!.superCategories; track s._rid) {
+                        <optgroup [label]="s.name">
+                          @for (c of categoriesOf(s._rid); track c._rid) {
+                            <option [value]="c._rid" [selected]="moveTarget() === c._rid">{{ c.name }}</option>
+                          }
+                        </optgroup>
+                      }
+                    </select>
+                  </label>
+                  <button type="button" class="btn btn-blue" [disabled]="!moveTarget() || busy()" (click)="moveSelected()">
+                    {{ busy() ? 'Moving…' : 'Move' }}
+                  </button>
+                  <button type="button" class="btn btn-light" (click)="clearSelection()">Clear</button>
+                </div>
               }
             }
             @case ('categories') {
@@ -391,6 +434,54 @@ const money = (n?: number) => (n === undefined ? '' : `$${n.toFixed(2)}`);
       border-radius: var(--radius);
       background: #fff;
     }
+    .pickable {
+      display: flex;
+      align-items: flex-start;
+    }
+    .pickable > .pick {
+      margin: 14px 0 0 14px;
+    }
+    .pickable.picked {
+      background: #eef4fb;
+    }
+    .pick {
+      width: 20px;
+      height: 20px;
+      min-height: 20px;
+      flex: none;
+      padding: 0;
+      accent-color: var(--blue);
+      cursor: pointer;
+    }
+    .group h2 .pick {
+      vertical-align: -3px;
+      margin-right: 6px;
+    }
+    .move-bar {
+      position: sticky;
+      bottom: 12px;
+      z-index: 5;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px 14px;
+      margin-top: 24px;
+      padding: 12px 16px;
+      background: #fff;
+      border: 1px solid #d5dde8;
+      border-radius: var(--radius);
+      box-shadow: 0 8px 30px rgba(20, 30, 45, 0.18);
+    }
+    .move-to {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1 1 260px;
+    }
+    .move-to span {
+      font-weight: 700;
+      white-space: nowrap;
+    }
     .rows li + li {
       border-top: 1px solid #eee8e0;
     }
@@ -554,6 +645,10 @@ export class Admin implements OnDestroy {
   readonly formError = signal('');
   readonly confirmDelete = signal(false);
 
+  /** Items ticked for a bulk move (Airtable record ids). */
+  readonly selected = signal<ReadonlySet<string>>(new Set());
+  readonly moveTarget = signal('');
+
   readonly visibleCategories = computed(() => {
     const d = this.data();
     const f = this.menuFilter();
@@ -643,6 +738,54 @@ export class Admin implements OnDestroy {
       this.data.set(await this.api.loadMenu());
     } catch (e) {
       this.fail(e);
+    } finally {
+      this.busy.set(false);
+    }
+  }
+
+  // ---- bulk move ----
+  toggle(rid: string, on: boolean) {
+    this.selected.update((s) => {
+      const next = new Set(s);
+      on ? next.add(rid) : next.delete(rid);
+      return next;
+    });
+  }
+
+  toggleGroup(items: ItemRow[], on: boolean) {
+    this.selected.update((s) => {
+      const next = new Set(s);
+      for (const i of items) on ? next.add(i._rid) : next.delete(i._rid);
+      return next;
+    });
+  }
+
+  groupState(items: ItemRow[]): 'all' | 'some' | 'none' {
+    const n = items.filter((i) => this.selected().has(i._rid)).length;
+    return n === 0 ? 'none' : n === items.length ? 'all' : 'some';
+  }
+
+  clearSelection() {
+    this.selected.set(new Set());
+    this.moveTarget.set('');
+  }
+
+  async moveSelected() {
+    const to = this.moveTarget();
+    const ids = [...this.selected()];
+    if (!to || !ids.length) return;
+    const target = this.data()?.categories.find((c) => c._rid === to)?.name ?? 'the category';
+    this.busy.set(true);
+    this.error.set('');
+    try {
+      const r = await this.api.move('items', ids, to);
+      this.clearSelection();
+      const extra = r.alreadyThere ? ` (${r.alreadyThere} already there)` : '';
+      this.notice.set(`Moved ${r.moved} ${r.moved === 1 ? 'item' : 'items'} to ${target}${extra}. The website shows the change within about a minute.`);
+      await this.load();
+    } catch (e) {
+      this.fail(e);
+      await this.load(); // show what did move if it stopped partway
     } finally {
       this.busy.set(false);
     }
