@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://lairtr.github.io/safir-mediterranean/sitemap.xml
