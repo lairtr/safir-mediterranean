@@ -1,0 +1,12 @@
+# Cloudflare Worker that holds the Airtable token, serves the live menu to
+# the website and powers the admin page.
+# Deploy: cd admin-api && npx wrangler deploy   (see README.md)
+name = "safir-admin-api"
+main = "worker.js"
+compatibility_date = "2026-11-01"
+
+[vars]
+# Websites allowed to use the admin endpoints (comma-separated, no trailing
+# slash). The public menu endpoint is open to all.
+# Remove http://localhost:4200 if you never run the admin page locally.
+ALLOWED_ORIGINS = "https://lairtr.github.io,http://localhost:4200"

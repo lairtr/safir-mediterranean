@@ -4,5 +4,10 @@
 /out-tsc
 .DS_Store
 
+# Local secrets (never commit)
+.dev.vars
+.env
+/admin-api/.wrangler/
+
 # Raw WordPress media download (not used by the site; masters are in image-src/)
 /images/

@@ -1,0 +1,88 @@
+[
+  {
+    "id": "soup-appetizers",
+    "superCategoryId": "main-menu",
+    "name": "Soup & Appetizers"
+  },
+  {
+    "id": "salads",
+    "superCategoryId": "main-menu",
+    "name": "Salads"
+  },
+  {
+    "id": "oven-specialties",
+    "superCategoryId": "main-menu",
+    "name": "Oven Specialties"
+  },
+  {
+    "id": "entrees",
+    "superCategoryId": "main-menu",
+    "name": "Entrees"
+  },
+  {
+    "id": "seafood",
+    "superCategoryId": "main-menu",
+    "name": "Seafood"
+  },
+  {
+    "id": "vegetarian-dishes",
+    "superCategoryId": "main-menu",
+    "name": "Vegetarian Dishes"
+  },
+  {
+    "id": "sautes",
+    "superCategoryId": "main-menu",
+    "name": "Sautés"
+  },
+  {
+    "id": "sides",
+    "superCategoryId": "main-menu",
+    "name": "Sides"
+  },
+  {
+    "id": "desserts",
+    "superCategoryId": "main-menu",
+    "name": "Desserts"
+  },
+  {
+    "id": "soft-drinks",
+    "superCategoryId": "main-menu",
+    "name": "Soft Drinks"
+  },
+  {
+    "id": "lunch",
+    "superCategoryId": "main-menu",
+    "name": "Lunch",
+    "description": "Monday through Friday, 11 AM – 3 PM. Lunch special (except holidays): all menu items are 20% off, except wraps."
+  },
+  {
+    "id": "breakfast-specialties",
+    "superCategoryId": "breakfast",
+    "name": "Breakfast Specialties"
+  },
+  {
+    "id": "breads",
+    "superCategoryId": "breakfast",
+    "name": "Breads"
+  },
+  {
+    "id": "beverages",
+    "superCategoryId": "breakfast",
+    "name": "Beverages"
+  },
+  {
+    "id": "this-weeks-specials-entrees",
+    "superCategoryId": "this-weeks-specials",
+    "name": "Entrees"
+  },
+  {
+    "id": "mix-grill-to-share",
+    "superCategoryId": "this-weeks-specials",
+    "name": "Mix Grill to Share"
+  },
+  {
+    "id": "this-weeks-specials-beverages",
+    "superCategoryId": "this-weeks-specials",
+    "name": "Beverages"
+  }
+]

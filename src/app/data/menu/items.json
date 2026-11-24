@@ -1,0 +1,758 @@
+[
+  {
+    "id": "lentil-soup",
+    "categoryId": "soup-appetizers",
+    "name": "Lentil Soup",
+    "description": "Pureed red lentils with Turkish seasonings & herbs",
+    "price": 8.95,
+    "available": true
+  },
+  {
+    "id": "hummus",
+    "categoryId": "soup-appetizers",
+    "name": "Hummus",
+    "description": "Chickpea spread with flavored garlic, tahini, olive oil & lemon juice",
+    "price": 9.95,
+    "available": true
+  },
+  {
+    "id": "babaghanoush",
+    "categoryId": "soup-appetizers",
+    "name": "Babaghanoush",
+    "description": "Smoked eggplant puree, tahini, garlic, olive oil & lemon juice",
+    "price": 9.95,
+    "available": true
+  },
+  {
+    "id": "haydari",
+    "categoryId": "soup-appetizers",
+    "name": "Haydari",
+    "description": "Labne yogurt mixed with fresh garlic, fresh dill, walnuts & olive oil",
+    "price": 9.95,
+    "available": true
+  },
+  {
+    "id": "pink-sultan",
+    "categoryId": "soup-appetizers",
+    "name": "Pink Sultan",
+    "description": "Labne yogurt, fresh beet and garlic dip",
+    "price": 9.95,
+    "available": true
+  },
+  {
+    "id": "muhammara",
+    "categoryId": "soup-appetizers",
+    "name": "Muhammara",
+    "description": "Spicy dip made of walnuts, red bell peppers, pomegranate molasses, breadcrumbs and olive oil",
+    "price": 10.95,
+    "available": true
+  },
+  {
+    "id": "mixed-appetizers",
+    "categoryId": "soup-appetizers",
+    "name": "Mixed Appetizers",
+    "description": "Haydari, Babaghanoush, Hummus, Pink Sultan & Muhammara",
+    "price": 23.95,
+    "available": true
+  },
+  {
+    "id": "sigara-borek",
+    "categoryId": "soup-appetizers",
+    "name": "Sigara Borek",
+    "description": "Pan-fried phyllo rolls stuffed with feta cheese and parsley",
+    "price": 11.95,
+    "available": true
+  },
+  {
+    "id": "falafel-4-balls",
+    "categoryId": "soup-appetizers",
+    "name": "Falafel (4 balls)",
+    "description": "Falafel balls served with a scoop of hummus & tahini sauce",
+    "price": 12.95,
+    "available": true
+  },
+  {
+    "id": "fried-calamari",
+    "categoryId": "soup-appetizers",
+    "name": "Fried Calamari",
+    "price": 15.95,
+    "available": true
+  },
+  {
+    "id": "kibbeh-icli-kofte",
+    "categoryId": "soup-appetizers",
+    "name": "Kibbeh (Icli Kofte)",
+    "description": "Two pieces of cracked wheat, stuffed with ground meat, walnuts & herbs",
+    "price": 14.95,
+    "available": true
+  },
+  {
+    "id": "calf-liver",
+    "categoryId": "soup-appetizers",
+    "name": "Calf Liver",
+    "description": "Served with potato cubes, cherry tomatoes, parsley and red onion with sumac",
+    "price": 17.95,
+    "available": true
+  },
+  {
+    "id": "grilled-octopus",
+    "categoryId": "soup-appetizers",
+    "name": "Grilled Octopus",
+    "description": "Char-grilled octopus served with tomatoes, onion, parsley, garlic, olive oil and vinegar",
+    "price": 21.95,
+    "available": true
+  },
+  {
+    "id": "greek-salad",
+    "categoryId": "salads",
+    "name": "Greek Salad",
+    "description": "Freshly diced tomatoes, cucumbers, onions, parsley, lettuce, black olives, feta cheese, olive oil and lemon juice",
+    "price": 14.95,
+    "available": true
+  },
+  {
+    "id": "mediterranean-salad",
+    "categoryId": "salads",
+    "name": "Mediterranean Salad",
+    "description": "Lettuce, red cabbage, carrots, tomatoes, cucumbers, feta cheese, olive oil and lemon juice",
+    "price": 14.95,
+    "available": true
+  },
+  {
+    "id": "salad-toppings-shrimp",
+    "categoryId": "salads",
+    "name": "Salad Toppings – Shrimp",
+    "price": 12.95,
+    "available": true
+  },
+  {
+    "id": "salad-toppings-grilled-chicken",
+    "categoryId": "salads",
+    "name": "Salad Toppings – Grilled Chicken",
+    "price": 11.95,
+    "available": true
+  },
+  {
+    "id": "salad-toppings-lamb-doner-gyro",
+    "categoryId": "salads",
+    "name": "Salad Toppings – Lamb Doner (Gyro)",
+    "price": 11.95,
+    "available": true
+  },
+  {
+    "id": "salad-toppings-falafel-4-balls",
+    "categoryId": "salads",
+    "name": "Salad Toppings – Falafel (4 balls)",
+    "price": 8.95,
+    "available": true
+  },
+  {
+    "id": "lahmacun-2-pcs",
+    "categoryId": "oven-specialties",
+    "name": "Lahmacun (2 pcs)",
+    "description": "Anatolian version of the ancient Turkish meat pie: ground lamb topped with parsley, fresh tomatoes, red peppers and onions on thin dough, served with lemon, parsley, tomatoes and onions",
+    "price": 19.95,
+    "available": true
+  },
+  {
+    "id": "cheese-pide",
+    "categoryId": "oven-specialties",
+    "name": "Cheese Pide",
+    "description": "Flattened dough with tomatoes and a mozzarella & parmesan cheese mix",
+    "price": 19.95,
+    "available": true
+  },
+  {
+    "id": "spinach-pide",
+    "categoryId": "oven-specialties",
+    "name": "Spinach Pide",
+    "description": "Flattened dough with spinach, onions, tomatoes and a mozzarella & parmesan cheese mix",
+    "price": 21.95,
+    "available": true
+  },
+  {
+    "id": "chefs-special-pide",
+    "categoryId": "oven-specialties",
+    "name": "Chef's Special Pide",
+    "description": "Flattened dough with Turkish sausages, pastirma (highly seasoned air-dried cured beef) and a mozzarella & parmesan cheese mix",
+    "price": 24.95,
+    "available": true
+  },
+  {
+    "id": "chicken-shish",
+    "categoryId": "entrees",
+    "name": "Chicken Shish",
+    "description": "Tender chunks of marinated chicken breast served with rice",
+    "price": 24.95,
+    "available": true
+  },
+  {
+    "id": "chicken-chops",
+    "categoryId": "entrees",
+    "name": "Chicken Chops",
+    "description": "Char-grilled chicken chops served with rice",
+    "price": 24.95,
+    "available": true
+  },
+  {
+    "id": "chicken-adana",
+    "categoryId": "entrees",
+    "name": "Chicken Adana",
+    "description": "Hand-chopped chicken served with sumac onions & rice",
+    "price": 24.95,
+    "available": true
+  },
+  {
+    "id": "lamb-doner-gyro",
+    "categoryId": "entrees",
+    "name": "Lamb Doner (Gyro)",
+    "description": "Homemade thinly sliced lamb doner served with rice",
+    "price": 24.95,
+    "available": true
+  },
+  {
+    "id": "iskender",
+    "categoryId": "entrees",
+    "name": "Iskender",
+    "description": "Lamb doner served over buttery bread with garlic yogurt and fresh tomato sauce on top",
+    "price": 26.95,
+    "available": true
+  },
+  {
+    "id": "lamb-adana",
+    "categoryId": "entrees",
+    "name": "Lamb Adana",
+    "description": "Hand-chopped lamb served with sumac, onions & rice",
+    "price": 26.95,
+    "available": true
+  },
+  {
+    "id": "lamb-shish-kebab",
+    "categoryId": "entrees",
+    "name": "Lamb Shish Kebab",
+    "description": "Marinated chunks of grilled lamb served with rice",
+    "price": 28.95,
+    "available": true
+  },
+  {
+    "id": "lamb-chops-4-pcs",
+    "categoryId": "entrees",
+    "name": "Lamb Chops (4 pcs)",
+    "description": "Char-grilled baby lamb chops served with rice",
+    "price": 37.95,
+    "available": true
+  },
+  {
+    "id": "mix-grill-for-one",
+    "categoryId": "entrees",
+    "name": "Mix Grill for One",
+    "description": "One skewer of lamb adana, one skewer of chicken adana, one lamb chop, one chicken chop, one piece of lamb shish, one piece of chicken shish and lamb doner served over rice",
+    "price": 47.95,
+    "available": true
+  },
+  {
+    "id": "mix-grill-for-two",
+    "categoryId": "entrees",
+    "name": "Mix Grill for Two",
+    "description": "One skewer of lamb adana, one skewer of chicken adana, two lamb chops, two chicken chops, two pieces of lamb shish, two pieces of chicken shish and lamb doner served over rice",
+    "price": 82.95,
+    "available": true
+  },
+  {
+    "id": "manti-turkish-ravioli",
+    "categoryId": "entrees",
+    "name": "Manti / Turkish Ravioli",
+    "description": "Dumplings stuffed with seasoned lamb, served with garlic yogurt and a light tomato sauce blend of herbs and spices",
+    "price": 23.95,
+    "available": true
+  },
+  {
+    "id": "eggplant-musakka",
+    "categoryId": "entrees",
+    "name": "Eggplant Musakka",
+    "description": "Baked eggplant, ground lamb, green peppers, onions, tomatoes and mozzarella cheese served with rice",
+    "price": 23.95,
+    "available": true
+  },
+  {
+    "id": "mediterranean-whole-branzino",
+    "categoryId": "seafood",
+    "name": "Mediterranean Whole Branzino",
+    "description": "Char-grilled whole branzino served with arugula salad",
+    "price": 33.95,
+    "available": true
+  },
+  {
+    "id": "grilled-salmon",
+    "categoryId": "seafood",
+    "name": "Grilled Salmon",
+    "description": "Char-grilled fillet of salmon served with sautéed spinach and arugula salad",
+    "price": 27.95,
+    "available": true
+  },
+  {
+    "id": "shrimp-skewers",
+    "categoryId": "seafood",
+    "name": "Shrimp Skewers",
+    "description": "Char-grilled jumbo shrimp skewers served with arugula salad",
+    "price": 27.95,
+    "available": true
+  },
+  {
+    "id": "okra",
+    "categoryId": "vegetarian-dishes",
+    "name": "Okra",
+    "description": "Baby okra cooked with fresh tomatoes, green peppers, onions, carrots and lemon juice, served with rice",
+    "price": 19.95,
+    "available": true
+  },
+  {
+    "id": "falafel-dinner",
+    "categoryId": "vegetarian-dishes",
+    "name": "Falafel Dinner",
+    "description": "Six balls of falafel served on a bed of oven-baked warm homemade hummus and tomatoes, topped with tahini sauce",
+    "price": 21.95,
+    "available": true
+  },
+  {
+    "id": "chicken-saute",
+    "categoryId": "sautes",
+    "name": "Chicken Saute",
+    "description": "Chunks of chicken sautéed with onions, mushrooms, green peppers, tomatoes, garlic & heavy cream, served with rice",
+    "price": 24.95,
+    "available": true
+  },
+  {
+    "id": "lamb-saute",
+    "categoryId": "sautes",
+    "name": "Lamb Saute",
+    "description": "Chunks of lamb sautéed with onions, mushrooms, green peppers, tomatoes, garlic & heavy cream, served with rice",
+    "price": 27.95,
+    "available": true
+  },
+  {
+    "id": "shrimp-saute",
+    "categoryId": "sautes",
+    "name": "Shrimp Saute",
+    "description": "Char-grilled jumbo shrimp with onions, mushrooms, green peppers, tomatoes, garlic & heavy cream, served with rice",
+    "price": 27.95,
+    "available": true
+  },
+  {
+    "id": "homemade-bread-1-pc",
+    "categoryId": "sides",
+    "name": "Homemade Bread (1 pc)",
+    "price": 1,
+    "available": true
+  },
+  {
+    "id": "balloon-bread",
+    "categoryId": "sides",
+    "name": "Balloon Bread",
+    "price": 4.25,
+    "available": true
+  },
+  {
+    "id": "lavash-bread",
+    "categoryId": "sides",
+    "name": "Lavash Bread",
+    "price": 2.95,
+    "available": true
+  },
+  {
+    "id": "simit",
+    "categoryId": "sides",
+    "name": "Simit",
+    "description": "Turkish sesame bagel",
+    "price": 4.25,
+    "available": true
+  },
+  {
+    "id": "french-fries",
+    "categoryId": "sides",
+    "name": "French Fries",
+    "price": 6.95,
+    "available": true
+  },
+  {
+    "id": "white-rice",
+    "categoryId": "sides",
+    "name": "White Rice",
+    "price": 5.95,
+    "available": true
+  },
+  {
+    "id": "sauteed-spinach",
+    "categoryId": "sides",
+    "name": "Sautéed Spinach",
+    "price": 6.95,
+    "available": true
+  },
+  {
+    "id": "steamed-broccoli",
+    "categoryId": "sides",
+    "name": "Steamed Broccoli",
+    "price": 6.95,
+    "available": true
+  },
+  {
+    "id": "extra-sauce",
+    "categoryId": "sides",
+    "name": "Extra Sauce",
+    "description": "Hot, white or tahini sauce",
+    "price": 0.75,
+    "available": true
+  },
+  {
+    "id": "kunefe",
+    "categoryId": "desserts",
+    "name": "Kunefe",
+    "description": "Oven-baked shredded wheat with pistachios and cheese filling, served with simple syrup and pistachios on top",
+    "price": 14.95,
+    "available": true
+  },
+  {
+    "id": "katmer",
+    "categoryId": "desserts",
+    "name": "Katmer",
+    "description": "Oven-baked phyllo pastry, pistachios and clotted cream, served with ice cream",
+    "price": 13.95,
+    "available": true
+  },
+  {
+    "id": "kazandibi",
+    "categoryId": "desserts",
+    "name": "Kazandibi",
+    "description": "Delicate Ottoman milk pudding with a burned top layer that adds a toasted, caramel-like flavor",
+    "price": 9.95,
+    "available": true
+  },
+  {
+    "id": "baklava",
+    "categoryId": "desserts",
+    "name": "Baklava",
+    "price": 10.95,
+    "available": true
+  },
+  {
+    "id": "rice-pudding",
+    "categoryId": "desserts",
+    "name": "Rice Pudding",
+    "price": 9.95,
+    "available": true
+  },
+  {
+    "id": "fig-pudding",
+    "categoryId": "desserts",
+    "name": "Fig Pudding",
+    "price": 9.95,
+    "available": true
+  },
+  {
+    "id": "turkish-tea",
+    "categoryId": "soft-drinks",
+    "name": "Turkish Tea",
+    "price": 2.5,
+    "available": true
+  },
+  {
+    "id": "turkish-coffee",
+    "categoryId": "soft-drinks",
+    "name": "Turkish Coffee",
+    "price": 4.25,
+    "available": true
+  },
+  {
+    "id": "water-medium",
+    "categoryId": "soft-drinks",
+    "name": "Water – Medium",
+    "price": 2.95,
+    "available": true
+  },
+  {
+    "id": "water-large",
+    "categoryId": "soft-drinks",
+    "name": "Water – Large",
+    "price": 5.95,
+    "available": true
+  },
+  {
+    "id": "san-pellegrino-medium",
+    "categoryId": "soft-drinks",
+    "name": "San Pellegrino – Medium",
+    "price": 4.95,
+    "available": true
+  },
+  {
+    "id": "san-pellegrino-large",
+    "categoryId": "soft-drinks",
+    "name": "San Pellegrino – Large",
+    "price": 7.95,
+    "available": true
+  },
+  {
+    "id": "ayran",
+    "categoryId": "soft-drinks",
+    "name": "Ayran",
+    "price": 4.25,
+    "available": true
+  },
+  {
+    "id": "salgam",
+    "categoryId": "soft-drinks",
+    "name": "Salgam",
+    "price": 4.25,
+    "available": true
+  },
+  {
+    "id": "turkish-club-soda",
+    "categoryId": "soft-drinks",
+    "name": "Turkish Club Soda",
+    "price": 4.25,
+    "available": true
+  },
+  {
+    "id": "turkish-gazoz",
+    "categoryId": "soft-drinks",
+    "name": "Turkish Gazoz",
+    "description": "Orange or mixed fruit",
+    "price": 4.25,
+    "available": true
+  },
+  {
+    "id": "can-sodas",
+    "categoryId": "soft-drinks",
+    "name": "Can Sodas",
+    "price": 3.95,
+    "available": true
+  },
+  {
+    "id": "falafel-wrap",
+    "categoryId": "lunch",
+    "name": "Falafel Wrap",
+    "price": 12.95,
+    "available": true
+  },
+  {
+    "id": "lamb-adana-wrap",
+    "categoryId": "lunch",
+    "name": "Lamb Adana Wrap",
+    "price": 13.95,
+    "available": true
+  },
+  {
+    "id": "lamb-doner-wrap",
+    "categoryId": "lunch",
+    "name": "Lamb Doner Wrap",
+    "price": 13.95,
+    "available": true
+  },
+  {
+    "id": "chicken-adana-wrap",
+    "categoryId": "lunch",
+    "name": "Chicken Adana Wrap",
+    "price": 13.95,
+    "available": true
+  },
+  {
+    "id": "chicken-shish-wrap",
+    "categoryId": "lunch",
+    "name": "Chicken Shish Wrap",
+    "price": 14.95,
+    "available": true
+  },
+  {
+    "id": "traditional-turkish-breakfast-platter",
+    "categoryId": "breakfast-specialties",
+    "name": "Traditional Turkish Breakfast Platter",
+    "description": "Two sigara böreks, assorted cheeses, honey & butter, jam, black olives, tomatoes and cucumbers, served with one simit (homemade Turkish sesame bagel)",
+    "price": 25.95,
+    "available": true
+  },
+  {
+    "id": "menemen",
+    "categoryId": "breakfast-specialties",
+    "name": "Menemen",
+    "description": "Two eggs cooked with tomatoes, peppers, onions and garlic, served with one homemade roll",
+    "price": 14.95,
+    "available": true
+  },
+  {
+    "id": "eggs-with-sucuk",
+    "categoryId": "breakfast-specialties",
+    "name": "Eggs with Sucuk",
+    "description": "Two eggs cooked with sucuk (Turkish spiced dry sausage), served with one homemade roll",
+    "price": 14.95,
+    "available": true
+  },
+  {
+    "id": "eggs-with-pastirma",
+    "categoryId": "breakfast-specialties",
+    "name": "Eggs with Pastırma",
+    "description": "Two eggs cooked with pastırma (Turkish air-dried cured beef), served with one homemade roll",
+    "price": 14.95,
+    "available": true
+  },
+  {
+    "id": "two-eggs-any-style",
+    "categoryId": "breakfast-specialties",
+    "name": "Two Eggs, Any Style",
+    "description": "Two eggs cooked your choice of style. Add toppings for $3.95: feta cheese, cheddar cheese, spinach & onion mix",
+    "price": 8.95,
+    "available": true
+  },
+  {
+    "id": "breakfast-specialties-sigara-borek",
+    "categoryId": "breakfast-specialties",
+    "name": "Sigara Börek",
+    "description": "Four pan-fried phyllo rolls stuffed with feta cheese and parsley",
+    "price": 12.95,
+    "available": true
+  },
+  {
+    "id": "turkish-pides-cheese-tomato",
+    "categoryId": "breakfast-specialties",
+    "name": "Turkish Pides – Cheese & Tomato",
+    "price": 20.95,
+    "available": true
+  },
+  {
+    "id": "turkish-pides-spinach",
+    "categoryId": "breakfast-specialties",
+    "name": "Turkish Pides – Spinach",
+    "price": 22.95,
+    "available": true
+  },
+  {
+    "id": "turkish-pides-sucuk-pastirma",
+    "categoryId": "breakfast-specialties",
+    "name": "Turkish Pides – Sucuk & Pastırma",
+    "price": 25.95,
+    "available": true
+  },
+  {
+    "id": "breads-simit",
+    "categoryId": "breads",
+    "name": "Simit",
+    "description": "Homemade Turkish sesame bagel",
+    "price": 4.95,
+    "available": true
+  },
+  {
+    "id": "homemade-balloon-bread",
+    "categoryId": "breads",
+    "name": "Homemade Balloon Bread",
+    "price": 4.95,
+    "available": true
+  },
+  {
+    "id": "homemade-roll",
+    "categoryId": "breads",
+    "name": "Homemade Roll",
+    "price": 1.5,
+    "available": true
+  },
+  {
+    "id": "beverages-turkish-tea",
+    "categoryId": "beverages",
+    "name": "Turkish Tea",
+    "price": 2.95,
+    "available": true
+  },
+  {
+    "id": "pot-of-turkish-tea",
+    "categoryId": "beverages",
+    "name": "Pot of Turkish Tea",
+    "price": 20,
+    "available": true
+  },
+  {
+    "id": "beverages-turkish-coffee",
+    "categoryId": "beverages",
+    "name": "Turkish Coffee",
+    "price": 4.95,
+    "available": true
+  },
+  {
+    "id": "orange-juice",
+    "categoryId": "beverages",
+    "name": "Orange Juice",
+    "price": 4.95,
+    "available": true
+  },
+  {
+    "id": "ali-nazik",
+    "categoryId": "this-weeks-specials-entrees",
+    "name": "Ali Nazik",
+    "description": "Chicken shish, lamb shish or lamb doner served on a bed of eggplant puree",
+    "price": 27.95,
+    "available": true
+  },
+  {
+    "id": "cokertme-kebab",
+    "categoryId": "this-weeks-specials-entrees",
+    "name": "Cokertme Kebab",
+    "description": "Chicken shish, lamb shish or lamb doner served on a bed of french fries, topped with tomato sauce and yogurt",
+    "price": 27.95,
+    "available": true
+  },
+  {
+    "id": "beyti-adana-kebab",
+    "categoryId": "this-weeks-specials-entrees",
+    "name": "Beyti Adana Kebab",
+    "description": "Ground lamb or chicken Adana kebab, wrapped and cut in lavash bread, topped with tomato and yogurt sauces",
+    "price": 27.95,
+    "available": true
+  },
+  {
+    "id": "lamb-shank",
+    "categoryId": "this-weeks-specials-entrees",
+    "name": "Lamb Shank",
+    "description": "Slow-cooked, very generous roasted lamb leg with special herbs and spices, topped with tomato sauce, served with rice",
+    "price": 37.95,
+    "available": true
+  },
+  {
+    "id": "for-kids",
+    "categoryId": "this-weeks-specials-entrees",
+    "name": "For Kids",
+    "description": "Chicken tenders and french fries",
+    "price": 18.95,
+    "available": true
+  },
+  {
+    "id": "mix-grill-for-3",
+    "categoryId": "mix-grill-to-share",
+    "name": "Mix Grill for 3",
+    "price": 130.95,
+    "available": true
+  },
+  {
+    "id": "mix-grill-for-5",
+    "categoryId": "mix-grill-to-share",
+    "name": "Mix Grill for 5",
+    "price": 213.95,
+    "available": true
+  },
+  {
+    "id": "mix-grill-for-7",
+    "categoryId": "mix-grill-to-share",
+    "name": "Mix Grill for 7",
+    "price": 296.95,
+    "available": true
+  },
+  {
+    "id": "troy-turkish-lager-turk-tuborg",
+    "categoryId": "this-weeks-specials-beverages",
+    "name": "Troy Turkish Lager – Turk Tuborg",
+    "price": 8.5,
+    "available": true
+  },
+  {
+    "id": "individual-champagne-bottle-off-the-hook-spain",
+    "categoryId": "this-weeks-specials-beverages",
+    "name": "Individual champagne bottle “Off the Hook”, Spain",
+    "price": 15,
+    "available": true
+  }
+]

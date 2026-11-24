@@ -36,6 +36,12 @@ export const routes: Routes = [
         'Order Safir Mediterranean for delivery or pickup on DoorDash, Seamless, Uber Eats, Fantuan or ChowNow, call (347) 924-9152, or book catering.',
     },
   },
+  {
+    // Menu editor. Unlinked, client-rendered only, noindex (see pages/admin).
+    path: 'admin',
+    loadComponent: () => import('./pages/admin/admin').then((m) => m.Admin),
+    title: 'Admin | Safir Mediterranean',
+  },
   { path: 'about-us', redirectTo: '' }, // About section was removed
   { path: 'contact-us', canActivate: [toSection('contact-us')], children: [] },
   { path: '**', redirectTo: '' },

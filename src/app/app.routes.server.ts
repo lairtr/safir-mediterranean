@@ -9,5 +9,7 @@ export const serverRoutes: ServerRoute[] = [
   { path: '', renderMode: RenderMode.Prerender },
   { path: 'menu', renderMode: RenderMode.Prerender },
   { path: 'order-online', renderMode: RenderMode.Prerender },
+  // Never prerendered, so it isn't in the sitemap and Pages serves it as a 404.
+  { path: 'admin', renderMode: RenderMode.Client },
   { path: '**', renderMode: RenderMode.Client },
 ];

@@ -4,6 +4,11 @@
 #
 # One-time setup: Settings → Pages → Source: "Deploy from a branch",
 # Branch: gh-pages, folder: / (root).
+#
+# Menu: the site loads prices live from Airtable, so menu changes don't need
+# a deploy. With repository secrets AIRTABLE_TOKEN and AIRTABLE_BASE_ID set
+# (Settings → Secrets and variables → Actions), each deploy also refreshes
+# the built-in menu snapshot that search engines see.
 name: Deploy website
 
 on:
@@ -27,6 +32,9 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      # Only a yes/no flag here; the token itself is passed to one step below.
+      HAS_AIRTABLE: ${{ secrets.AIRTABLE_TOKEN != '' }}
     steps:
       - name: Check out source
         uses: actions/checkout@v4
@@ -66,6 +74,14 @@ jobs:
           echo "url=https://${host}${base}" >> "$GITHUB_OUTPUT"
           echo "Base href: $base"
           echo "Site URL:  https://${host}${base}"
+
+      - name: Snapshot the menu from Airtable
+        # Uses the menu JSON committed in the repo when the secret isn't set.
+        if: env.HAS_AIRTABLE == 'true'
+        env:
+          AIRTABLE_TOKEN: ${{ secrets.AIRTABLE_TOKEN }}
+          AIRTABLE_BASE_ID: ${{ secrets.AIRTABLE_BASE_ID }}
+        run: node scripts/fetch-menu.mjs
 
       - name: Build (prerenders Home, Menu and Order Online to static HTML)
         run: npx ng build --configuration production --base-href "${{ steps.base.outputs.href }}"

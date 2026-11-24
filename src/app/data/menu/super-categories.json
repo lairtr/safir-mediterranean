@@ -1,0 +1,37 @@
+[
+  {
+    "id": "main-menu",
+    "name": "Main Menu",
+    "images": [
+      {
+        "src": "images/menu/safir1.png",
+        "alt": "Printed main menu, page 1"
+      },
+      {
+        "src": "images/menu/safir2.png",
+        "alt": "Printed main menu, page 2"
+      }
+    ]
+  },
+  {
+    "id": "breakfast",
+    "name": "Breakfast",
+    "description": "Saturday & Sunday, 11:00 AM – 3:00 PM",
+    "images": [
+      {
+        "src": "images/menu/safir3.png",
+        "alt": "Printed breakfast menu"
+      }
+    ]
+  },
+  {
+    "id": "this-weeks-specials",
+    "name": "This Week's Specials",
+    "images": [
+      {
+        "src": "images/menu/safir4.png",
+        "alt": "Printed menu of this week's specials"
+      }
+    ]
+  }
+]

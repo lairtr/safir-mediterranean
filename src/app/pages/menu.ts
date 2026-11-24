@@ -1,6 +1,7 @@
-import { Component, DOCUMENT, DestroyRef, ElementRef, computed, inject, signal, viewChild } from '@angular/core';
+import { Component, DOCUMENT, DestroyRef, ElementRef, afterNextRender, computed, effect, inject, signal, viewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { MENUS, MENU_FOOTNOTES, Menu, MenuItem } from '../menu-data';
+import { MENU_FOOTNOTES, Menu, MenuItem } from '../menu-data';
+import { MenuStore } from '../menu-store';
 import { SITE } from '../site-data';
 import { Icon } from '../shared/icon';
 
@@ -19,7 +20,7 @@ import { Icon } from '../shared/icon';
         <p class="section-sub">Turkish &amp; Mediterranean classics, made fresh in Long Island City.</p>
 
         <div class="tabs" role="tablist" aria-label="Menus">
-          @for (m of menus; track m.id) {
+          @for (m of menus(); track m.id) {
             <button
               type="button"
               role="tab"
@@ -64,15 +65,10 @@ import { Icon } from '../shared/icon';
             <p class="sec-note">{{ s.note }}</p>
           }
           <ul class="items" [class.compact]="s.compact">
-            @for (item of s.items; track item.name) {
-              <li class="item">
+            @for (item of s.items; track item.id) {
+              <li class="item" [class.unavailable]="!item.available">
                 <div class="line">
-                  <h3>
-                    {{ item.name }}
-                    @if (item.qty) {
-                      <span class="qty">({{ item.qty }})</span>
-                    }
-                  </h3>
+                  <h3>{{ item.name }}</h3>
                   @if (item.price) {
                     <span class="price">\${{ item.price }}</span>
                   }
@@ -80,12 +76,8 @@ import { Icon } from '../shared/icon';
                 @if (item.desc) {
                   <p class="desc">{{ item.desc }}</p>
                 }
-                @if (item.prices) {
-                  <ul class="variants">
-                    @for (v of item.prices; track v.label) {
-                      <li><span>{{ v.label }}</span><span class="price">\${{ v.price }}</span></li>
-                    }
-                  </ul>
+                @if (!item.available) {
+                  <p class="sold-out">Currently unavailable</p>
                 }
               </li>
             }
@@ -298,11 +290,6 @@ import { Icon } from '../shared/icon';
       font-size: 17px;
       font-weight: 700;
     }
-    .qty {
-      font-weight: 400;
-      color: var(--muted);
-      font-size: 15px;
-    }
     .price {
       font-weight: 900;
       color: var(--blue);
@@ -315,18 +302,18 @@ import { Icon } from '../shared/icon';
       line-height: 1.5;
       color: var(--muted);
     }
-    .variants {
-      list-style: none;
-      margin: 6px 0 0;
-      padding: 0;
-      display: grid;
-      gap: 2px;
-      font-size: 15.5px;
+    .unavailable h3,
+    .unavailable .price {
+      color: var(--muted);
     }
-    .variants li {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
+    .unavailable .price {
+      text-decoration: line-through;
+    }
+    .sold-out {
+      margin: 6px 0 0;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--red-cta);
     }
 
     .foot {
@@ -465,14 +452,15 @@ import { Icon } from '../shared/icon';
 })
 export class MenuPage {
   readonly site = SITE;
-  readonly menus = MENUS;
+  private readonly store = inject(MenuStore);
+  readonly menus = this.store.menus;
   readonly footnotes = MENU_FOOTNOTES;
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly dialog = viewChild.required<ElementRef<HTMLDialogElement>>('printed');
 
-  private readonly activeId = signal(this.route.snapshot.queryParamMap.get('m') ?? MENUS[0].id);
-  readonly active = computed(() => this.menus.find((m) => m.id === this.activeId()) ?? this.menus[0]);
+  private readonly activeId = signal(this.route.snapshot.queryParamMap.get('m') ?? '');
+  readonly active = computed(() => this.menus().find((m) => m.id === this.activeId()) ?? this.menus()[0]);
   readonly viewerOpen = signal(false);
 
   constructor() {
@@ -486,14 +474,19 @@ export class MenuPage {
       script.type = 'application/ld+json';
       doc.head.appendChild(script);
     }
-    script.textContent = JSON.stringify(menuJsonLd());
+    const jsonLd = script;
+    // Kept in step with the live menu once it loads.
+    effect(() => (jsonLd.textContent = JSON.stringify(menuJsonLd(this.menus()))));
     inject(DestroyRef).onDestroy(() => doc.getElementById('menu-jsonld')?.remove());
+
+    // Swap in the live menu (current prices) once the page is in the browser.
+    afterNextRender(() => this.store.refresh());
   }
 
   select(m: Menu) {
     this.activeId.set(m.id);
     this.router.navigate([], {
-      queryParams: { m: m.id === MENUS[0].id ? null : m.id },
+      queryParams: { m: m.id === this.menus()[0].id ? null : m.id },
       replaceUrl: true,
     });
   }
@@ -513,19 +506,22 @@ export class MenuPage {
   }
 }
 
-function menuJsonLd() {
+function menuJsonLd(menus: Menu[]) {
   const offers = (item: MenuItem) =>
-    item.prices
-      ? item.prices.map((p) => ({ '@type': 'Offer', name: p.label, price: p.price, priceCurrency: 'USD' }))
-      : item.price
-        ? { '@type': 'Offer', price: item.price, priceCurrency: 'USD' }
-        : undefined;
+    item.price
+      ? {
+          '@type': 'Offer',
+          price: item.price,
+          priceCurrency: 'USD',
+          availability: `https://schema.org/${item.available ? 'InStock' : 'OutOfStock'}`,
+        }
+      : undefined;
   return {
     '@context': 'https://schema.org',
     '@type': 'Menu',
     name: 'Safir Mediterranean Menu',
     inLanguage: 'en',
-    hasMenuSection: MENUS.map((m) => ({
+    hasMenuSection: menus.map((m) => ({
       '@type': 'MenuSection',
       name: m.label,
       description: m.note,
@@ -535,7 +531,7 @@ function menuJsonLd() {
         description: s.note,
         hasMenuItem: s.items.map((i) => ({
           '@type': 'MenuItem',
-          name: i.qty ? `${i.name} (${i.qty})` : i.name,
+          name: i.name,
           description: i.desc,
           offers: offers(i),
         })),
