@@ -35,11 +35,9 @@ import { OpenStatus } from '../shared/open-status';
         <h1 id="hero-title" class="script">{{ site.tagline }}</h1>
         <p class="intro">{{ site.intro }}</p>
         <!-- Menu and Order Online are always in the sticky header, so the hero
-             doesn't repeat them. Phones get the other two top mobile actions. -->
-        <div class="actions phone-only">
-          <a class="btn btn-light btn-lg" [href]="site.phone.tel"><app-icon name="phone" [size]="18" /> Call</a>
-          <a class="btn btn-light btn-lg" [href]="site.address.mapsUrl" target="_blank" rel="noopener"><app-icon name="directions" [size]="18" /> Directions</a>
-        </div>
+             doesn't repeat them. Phones get the other two top mobile actions,
+             Call and Directions, as compact round buttons beside the facts. -->
+        <div class="facts-row">
         <ul class="facts">
           <li><app-open-status /></li>
           <li>
@@ -52,6 +50,13 @@ import { OpenStatus } from '../shared/open-status';
             <a [href]="site.instagram" target="_blank" rel="noopener"><app-icon name="instagram" [size]="16" /> {{ site.instagramHandle }}</a>
           </li>
         </ul>
+        <div class="icon-actions phone-only">
+          <a class="round" [href]="site.phone.tel" aria-label="Call Safir"><app-icon name="phone" [size]="22" /></a>
+          <a class="round" [href]="site.address.mapsUrl" target="_blank" rel="noopener" aria-label="Get directions (opens Google Maps)">
+            <app-icon name="directions" [size]="22" />
+          </a>
+        </div>
+        </div>
       </div>
 
       <button type="button" class="pause" (click)="toggle()" [attr.aria-label]="playing() ? 'Pause slideshow' : 'Play slideshow'">
@@ -108,10 +113,24 @@ import { OpenStatus } from '../shared/open-status';
       font-weight: 700;
       max-width: 36ch;
     }
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
+    .icon-actions {
+      flex: none;
+      flex-direction: column;
       gap: 12px;
+    }
+    .round {
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #fff;
+      color: var(--blue);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+      transition: transform 0.15s;
+    }
+    .round:active {
+      transform: scale(0.94);
     }
     .phone-only {
       display: none;
@@ -169,14 +188,22 @@ import { OpenStatus } from '../shared/open-status';
       .intro {
         margin: 10px 0 20px;
       }
-      .actions .btn {
-        flex: 1 1 140px;
-      }
       .facts .wide-only {
         display: none;
       }
-      .actions.phone-only {
+      .icon-actions.phone-only {
         display: flex;
+      }
+      .facts-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-top: 22px;
+      }
+      .facts-row .facts {
+        margin-top: 0;
+        min-width: 0;
       }
       .facts {
         flex-direction: column;

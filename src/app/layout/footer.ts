@@ -47,9 +47,6 @@ import { Icon } from '../shared/icon';
       <div class="bottom">
         <div class="container bottom-inner">
           <p>{{ site.copyright }}</p>
-          <p>
-            Developed by <a [href]="site.credit.url" target="_blank" rel="noopener">Authorize Local</a>
-          </p>
         </div>
       </div>
     </footer>
@@ -121,12 +118,6 @@ import { Icon } from '../shared/icon';
     }
     .bottom p {
       margin: 0;
-    }
-    .bottom a {
-      display: inline-block;
-      padding: 4px 0;
-      font-weight: 700;
-      color: #fff;
     }
 
     @media (max-width: 1024px) {

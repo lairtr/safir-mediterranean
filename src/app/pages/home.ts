@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
 import { SITE } from '../site-data';
+import { menuSlug } from '../menu-data';
 import { Icon } from '../shared/icon';
 import { OpenStatus } from '../shared/open-status';
 import { HeroSlider } from './hero-slider';
@@ -23,7 +24,7 @@ import { HeroSlider } from './hero-slider';
         <ul class="grid">
           @for (dish of site.dishes; track dish.name) {
             <li>
-              <a routerLink="/menu" class="dish">
+              <a routerLink="/menu" [queryParams]="{ dish: dishKey(dish.menuItem) }" class="dish" [attr.aria-label]="dish.name + ' on the menu'">
                 <img [src]="dish.src" [attr.srcset]="dish.srcset" sizes="(max-width: 767px) 50vw, 300px" [alt]="dish.name" loading="lazy" decoding="async" width="480" height="480" />
                 <span>{{ dish.name }}</span>
               </a>
@@ -496,6 +497,8 @@ import { HeroSlider } from './hero-slider';
 })
 export class Home {
   readonly site = SITE;
+  /** ?dish= value for a signature dish's menu item, e.g. "lamb-adana" */
+  readonly dishKey = menuSlug;
   readonly home = SITE.home;
   // Same Google Maps embed the original site uses; the URL is a constant.
   readonly mapUrl = inject(DomSanitizer).bypassSecurityTrustResourceUrl(

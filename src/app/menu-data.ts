@@ -62,6 +62,8 @@ export const STATIC_MENU_DATA: MenuData = {
 export interface MenuItem {
   id: string;
   name: string;
+  /** Element id on the Menu page, from the name (e.g. "lamb-adana"); see findMenuItem */
+  anchor: string;
   /** Formatted, e.g. "8.95" */
   price?: string;
   desc?: string;
@@ -92,6 +94,41 @@ export const MENU_FOOTNOTES = [
   'For parties of six or more, a 20% gratuity will be automatically added to your bill.',
 ];
 
+/** "Mantı / Turkish Ravioli" → "manti-turkish-ravioli" */
+export const menuSlug = (s: string) =>
+  s
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/ı/g, 'i')
+    .replace(/['’]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+
+/**
+ * Looks up a menu item by name in whatever menu is showing (the live one once
+ * loaded), for links like /menu?dish=lamb-adana. Nothing is stored by
+ * position, so items can be added, moved or renamed. Tries, in order:
+ *   1. the exact name                      "baklava"  → Baklava
+ *   2. a name that starts with it          "lahmacun" → Lahmacun (2 pcs)
+ *   3. a name that contains it as words    "baklava"  → Pistachio Baklava
+ * Returns its menu and element id, or null (the link then just opens the menu).
+ */
+export function findMenuItem(menus: Menu[], key: string): { menuId: string; anchor: string } | null {
+  const want = menuSlug(key);
+  if (!want) return null;
+  const tests = [
+    (a: string) => a === want,
+    (a: string) => a.startsWith(want + '-'),
+    (a: string) => `-${a}-`.includes(`-${want}-`),
+  ];
+  for (const test of tests)
+    for (const m of menus)
+      for (const s of m.sections)
+        for (const i of s.items) if (test(i.anchor)) return { menuId: m.id, anchor: i.anchor };
+  return null;
+}
+
 /** "This Week's Specials" → "Specials", "Main Menu" → "Main" (phone tabs). */
 const shortLabel = (name: string) =>
   name.replace(/\b(this week['’]?s|our|the|menu)\b/gi, '').replace(/\s+/g, ' ').trim() || name;
@@ -117,6 +154,7 @@ export function buildMenus(data: MenuData): Menu[] {
             .map((i) => ({
               id: i.id,
               name: i.name,
+              anchor: menuSlug(i.name),
               price: i.price === undefined ? undefined : i.price.toFixed(2),
               desc: i.description,
               available: i.available !== false,

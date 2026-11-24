@@ -54,7 +54,6 @@ export const SITE = {
   cateringUrl: 'https://www.ezcater.com/catering/pvt/safir-mediterranean-3?fcv=1',
 
   copyright: `© ${new Date().getFullYear()} Safir Mediterranean`,
-  credit: { label: 'Developed by Authorize Local', url: 'https://www.authorizelocal.com' },
 
   logo: 'images/logo.png',
   logoWhite: 'images/logo-white.png',
@@ -108,15 +107,16 @@ export const SITE = {
     text: 'Turkish flavors that traveled about 5,000 miles — from the Bosphorus to Vernon Blvd.',
   },
 
+  // `menuItem`: the menu item each photo opens (its name, or the start of it).
   dishes: [
-    { name: 'Iskender Kebab', ...img('dish-iskender', [480, 960]) },
-    { name: 'Adana Kebab', ...img('dish-adana', [480, 960]) },
-    { name: 'Cheese Pide', ...img('dish-cheese-pide', [480, 960]) },
-    { name: 'Lahmacun', ...img('dish-lahmacun', [480, 960]) },
-    { name: 'Mantı', ...img('dish-manti', [480, 960]) },
-    { name: 'Fried Calamari', ...img('dish-calamari', [480, 960]) },
-    { name: 'Künefe', ...img('dish-kunefe', [480, 960]) },
-    { name: 'Baklava', ...img('dish-baklava', [480, 960]) },
+    { name: 'Iskender Kebab', menuItem: 'Iskender', ...img('dish-iskender', [480, 960]) },
+    { name: 'Adana Kebab', menuItem: 'Lamb Adana', ...img('dish-adana', [480, 960]) },
+    { name: 'Cheese Pide', menuItem: 'Cheese Pide', ...img('dish-cheese-pide', [480, 960]) },
+    { name: 'Lahmacun', menuItem: 'Lahmacun', ...img('dish-lahmacun', [480, 960]) },
+    { name: 'Mantı', menuItem: 'Manti', ...img('dish-manti', [480, 960]) },
+    { name: 'Fried Calamari', menuItem: 'Fried Calamari', ...img('dish-calamari', [480, 960]) },
+    { name: 'Künefe', menuItem: 'Kunefe', ...img('dish-kunefe', [480, 960]) },
+    { name: 'Baklava', menuItem: 'Baklava', ...img('dish-baklava', [480, 960]) },
   ],
 
   deliveryPartners: [

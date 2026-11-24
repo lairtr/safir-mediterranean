@@ -1,6 +1,6 @@
 import { Component, DOCUMENT, DestroyRef, afterNextRender, computed, effect, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { MENU_FOOTNOTES, Menu, MenuItem } from '../menu-data';
+import { MENU_FOOTNOTES, Menu, MenuItem, findMenuItem } from '../menu-data';
 import { MenuStore } from '../menu-store';
 import { SITE } from '../site-data';
 import { Icon } from '../shared/icon';
@@ -60,7 +60,7 @@ import { Icon } from '../shared/icon';
           }
           <ul class="items" [class.compact]="s.compact">
             @for (item of s.items; track item.id) {
-              <li class="item" [class.unavailable]="!item.available">
+              <li class="item" [id]="'item-' + item.anchor" [class.unavailable]="!item.available" [class.spotlight]="item.anchor === spotlight()">
                 <div class="line">
                   <h3>{{ item.name }}</h3>
                   @if (item.price) {
@@ -222,6 +222,23 @@ import { Icon } from '../shared/icon';
     .item {
       padding: 18px 0;
       border-bottom: 1px dashed #e6e0d8;
+      scroll-margin-top: 170px;
+    }
+    /* Flash the dish someone tapped on the home page */
+    .item.spotlight {
+      animation: spotlight 2.6s ease-out;
+      border-radius: 6px;
+    }
+    @keyframes spotlight {
+      0%,
+      45% {
+        background: #fff1d6;
+        box-shadow: 0 0 0 12px #fff1d6;
+      }
+      100% {
+        background: transparent;
+        box-shadow: 0 0 0 12px transparent;
+      }
     }
     .items.compact .item {
       padding: 12px 0;
@@ -321,6 +338,9 @@ import { Icon } from '../shared/icon';
       .short {
         display: inline;
       }
+      .item {
+        scroll-margin-top: 140px;
+      }
       .sec {
         padding-top: 28px;
         scroll-margin-top: 124px;
@@ -343,6 +363,8 @@ export class MenuPage {
   private readonly route = inject(ActivatedRoute);
 
   private readonly activeId = signal(this.route.snapshot.queryParamMap.get('m') ?? '');
+  /** Item flashed after arriving from a home-page dish photo (?dish=…) */
+  readonly spotlight = signal('');
   readonly active = computed(() => this.menus().find((m) => m.id === this.activeId()) ?? this.menus()[0]);
 
   constructor() {
@@ -362,7 +384,49 @@ export class MenuPage {
     inject(DestroyRef).onDestroy(() => doc.getElementById('menu-jsonld')?.remove());
 
     // Swap in the live menu (current prices) once the page is in the browser.
-    afterNextRender(() => this.store.refresh());
+    afterNextRender(() => {
+      const dish = this.route.snapshot.queryParamMap.get('dish');
+      const startedAt = Date.now();
+      // Wait for the router's own scroll-to-top, then look the dish up by name.
+      if (dish) setTimeout(() => this.showDish(dish), 120);
+      this.store.refresh().then(() => {
+        // Look it up again in the live menu: the item may be new, renamed,
+        // moved or gone. Skip if it took too long or the visitor has
+        // already scrolled away on their own.
+        if (!dish || Date.now() - startedAt > 4000 || this.visitorScrolled) return;
+        setTimeout(() => this.showDish(dish), 0);
+      });
+      if (dish) {
+        // Only real input counts as "scrolled away": the live menu replacing
+        // the built-in one also moves the page, and that shouldn't stop us.
+        const stop = () => (this.visitorScrolled = true);
+        const events = ['wheel', 'touchmove', 'keydown'] as const;
+        for (const e of events) addEventListener(e, stop, { passive: true, once: true });
+        this.destroyRef.onDestroy(() => events.forEach((e) => removeEventListener(e, stop)));
+      }
+    });
+  }
+
+  private readonly destroyRef = inject(DestroyRef);
+  private visitorScrolled = false;
+  private shownAnchor = '';
+
+  /** Finds the dish in the current menu, switches tab, scrolls to it and flashes it. */
+  private showDish(key: string) {
+    const hit = findMenuItem(this.menus(), key);
+    if (!hit) return;
+    this.activeId.set(hit.menuId);
+    requestAnimationFrame(() => {
+      const el = document.getElementById('item-' + hit.anchor);
+      if (!el) return;
+      // Instant: a smooth scroll down a long menu is slow; the flash shows where you landed.
+      el.scrollIntoView({ block: 'start', behavior: 'instant' });
+      if (hit.anchor !== this.shownAnchor) {
+        this.shownAnchor = hit.anchor;
+        this.spotlight.set(hit.anchor);
+        setTimeout(() => this.spotlight.set(''), 2700);
+      }
+    });
   }
 
   select(m: Menu) {
